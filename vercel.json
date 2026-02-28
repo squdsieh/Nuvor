@@ -1,1 +1,15 @@
-{\n  "buildCommand": "npm run build",\n  "outputDirectory": ".",\n  "routes": [\n    {\n      "src": "/(.*)",\n      "dest": "./$1"\n    }\n  ]\n}
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/index.js"
+    }
+  ]
+}
