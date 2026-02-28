@@ -1,12 +1,1 @@
-{
-  "name": "nuvor-website",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
-}
+{"name":"nuvor-website","version":"1.0.0","description":"NUVOR Auto Care - Premium automotive protection, fleet branding, marine graphics & office design in Abu Dhabi, UAE","main":"index.html","scripts":{"build":"echo 'Static HTML deployment - no build required'","start":"echo 'Use Vercel deploy preview'"},"keywords":["car wrapping","PPF","ceramic coating","fleet branding","marine graphics"],"author":"NUVOR Auto Care","license":"ISC"}
