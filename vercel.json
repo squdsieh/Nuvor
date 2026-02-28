@@ -1,1 +1,1 @@
-{"version":2,"builds":[{"src":"index.html","use":"@vercel/static"}],"headers":[{"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"X-Frame-Options","value":"DENY"},{"key":"X-XSS-Protection","value":"1; mode=block"}]}]}
+{\n  "buildCommand": "npm run build",\n  "outputDirectory": ".",\n  "routes": [\n    {\n      "src": "/(.*)",\n      "dest": "./$1"\n    }\n  ]\n}
