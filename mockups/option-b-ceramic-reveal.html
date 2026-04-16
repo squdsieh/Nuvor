@@ -5,40 +5,41 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Nuvor Mockup B — Ceramic Coating Reveal</title>
 <style>
-  :root { --red:#8b0000; --bk:#000; --w:#fff; }
+  :root { --red:#8b0000; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; background: #000; color: #fff; font-family: 'Outfit', system-ui, sans-serif; overflow: hidden; }
   .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  #car-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+    filter: saturate(0.6) brightness(0.5) contrast(1.05);
+    transition: filter 2.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+  #car-bg.coated { filter: saturate(1.35) brightness(0.75) contrast(1.1); }
   #c { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-  .hero-ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.75)); z-index: 2; pointer-events: none; }
-  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; pointer-events: none; }
-  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; margin-bottom: 1rem; }
-  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: 0.02em; text-shadow: 0 2px 24px rgba(0,0,0,0.9); }
+  .hero-ov { position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.0) 35%, rgba(0,0,0,0.55) 100%);
+    z-index: 2; pointer-events: none; }
+  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; margin-top: -10vh; }
+  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; margin-bottom: 1rem; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.2rem); line-height: 1.05; text-shadow: 0 2px 30px rgba(0,0,0,0.9); }
   .hero-title .r { color: var(--red); }
-  .hero-sub { margin-top: 1rem; opacity: 0.85; font-size: clamp(0.95rem, 1.3vw, 1.1rem); }
-  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
+  .hero-sub { margin-top: 0.8rem; opacity: 0.9; font-size: clamp(0.9rem, 1.2vw, 1.05rem); }
+  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); }
   .controls { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; }
-  .controls button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; backdrop-filter: blur(6px); }
+  .controls button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; }
   .controls button:hover { background: rgba(139,0,0,0.4); border-color: var(--red); }
-  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); }
-  .hint { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 11px; opacity: 0.6; letter-spacing: 0.15em; text-transform: uppercase; }
+  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); }
+  .phase-label { position: fixed; bottom: 52px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400&display=swap" rel="stylesheet" />
 </head>
 <body>
-<div class="badge">Mockup B · Three.js Ceramic Coating Reveal</div>
+<div class="badge">Option B · Ceramic Coating Reveal</div>
 <a class="back" href="./index.html">← All mockups</a>
 
 <section class="hero">
+  <img id="car-bg"
+    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    alt="Bugatti Chiron" />
   <canvas id="c"></canvas>
   <div class="hero-ov"></div>
   <div class="hero-c">
@@ -47,238 +48,167 @@
     <p class="hero-sub">9H ceramic coating · hydrophobic · UV-stable</p>
   </div>
 </section>
+<div class="phase-label" id="phase-label">Loading</div>
+<div class="controls"><button id="replay">Replay Coating</button></div>
 
-<div class="hint">Drag to orbit</div>
-<div class="controls">
-  <button id="replay">Replay Coating</button>
-</div>
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const bg = document.getElementById('car-bg');
+  const phaseLabel = document.getElementById('phase-label');
+  let W = 0, H = 0;
 
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-
-const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
-
-const scene = new THREE.Scene();
-scene.background = null;
-
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-
-const camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 100);
-camera.position.set(4.5, 2.0, 5.5);
-
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-controls.minPolarAngle = Math.PI * 0.25;
-controls.maxPolarAngle = Math.PI * 0.5;
-controls.minDistance = 4.5;
-controls.maxDistance = 9;
-controls.enablePan = false;
-
-// Lights (env does most of it, but a red rim for brand)
-const key = new THREE.DirectionalLight(0xffffff, 1.2);
-key.position.set(5, 5, 5);
-scene.add(key);
-const rim = new THREE.PointLight(0x8b0000, 8, 15, 2);
-rim.position.set(-3, 2, -3);
-scene.add(rim);
-
-// Ground (subtle reflective disk)
-const ground = new THREE.Mesh(
-  new THREE.CircleGeometry(10, 64),
-  new THREE.MeshStandardMaterial({ color: 0x050505, metalness: 0.4, roughness: 0.6 })
-);
-ground.rotation.x = -Math.PI/2;
-ground.position.y = -0.6;
-scene.add(ground);
-
-// --- Build a stylised low-poly car from primitives ---
-const car = new THREE.Group();
-
-const bodyMat = new THREE.MeshPhysicalMaterial({
-  color: 0x141414,
-  metalness: 0.9,
-  roughness: 0.55,     // starts dull
-  clearcoat: 0.0,      // animates to 1
-  clearcoatRoughness: 0.2,
-  reflectivity: 0.5,
-});
-
-function body(w, h, d, y, color) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bodyMat);
-  m.position.y = y;
-  car.add(m);
-  return m;
-}
-
-// Main chassis
-const chassis = body(3.6, 0.55, 1.5, 0.0);
-// Hood (front) — taper via slight scale
-const hood = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.35, 1.4), bodyMat);
-hood.position.set(1.1, 0.15, 0);
-car.add(hood);
-// Rear
-const rear = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.40, 1.4), bodyMat);
-rear.position.set(-1.1, 0.18, 0);
-car.add(rear);
-// Cabin
-const cabinGeo = new THREE.BoxGeometry(1.7, 0.55, 1.35);
-const cabinMat = new THREE.MeshPhysicalMaterial({ color: 0x0a0a0a, metalness: 0.2, roughness: 0.05, transmission: 0.6, thickness: 0.5, ior: 1.4 });
-const cabin = new THREE.Mesh(cabinGeo, cabinMat);
-cabin.position.set(-0.05, 0.55, 0);
-car.add(cabin);
-// Roof taper (smaller box on top)
-const roof = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.08, 1.2), bodyMat);
-roof.position.set(-0.05, 0.86, 0);
-car.add(roof);
-
-// Wheels
-const tireMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.9, metalness: 0.1 });
-const rimMat = new THREE.MeshPhysicalMaterial({ color: 0xcccccc, metalness: 1.0, roughness: 0.15 });
-function wheel(x, z) {
-  const g = new THREE.Group();
-  const tire = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.28, 24), tireMat);
-  tire.rotation.z = Math.PI/2;
-  g.add(tire);
-  const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.30, 10), rimMat);
-  rim.rotation.z = Math.PI/2;
-  g.add(rim);
-  g.position.set(x, -0.35, z);
-  car.add(g);
-  return g;
-}
-wheel(1.2, 0.72);
-wheel(1.2, -0.72);
-wheel(-1.2, 0.72);
-wheel(-1.2, -0.72);
-
-// Headlights
-const hlMat = new THREE.MeshStandardMaterial({ color: 0xfff4d6, emissive: 0xfff1c2, emissiveIntensity: 1.2 });
-[[-0.4, 0.6],[0.4, 0.6]].forEach(([dx,dz])=>{
-  const hl = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.12, 0.08), hlMat);
-  hl.position.set(1.85, 0.15, dz - 0.3);
-  car.add(hl);
-});
-// Tail lights (red)
-const tlMat = new THREE.MeshStandardMaterial({ color: 0x8b0000, emissive: 0x8b0000, emissiveIntensity: 1.6 });
-[[-0.4],[0.4]].forEach(([dz])=>{
-  const tl = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.10, 0.06), tlMat);
-  tl.position.set(-1.85, 0.25, dz);
-  car.add(tl);
-});
-
-scene.add(car);
-
-// --- Mist sweep (a thin glowing plane that travels across the car) ---
-const mistMat = new THREE.MeshBasicMaterial({
-  color: 0xffffff,
-  transparent: true,
-  opacity: 0.0,
-  side: THREE.DoubleSide,
-  blending: THREE.AdditiveBlending,
-});
-const mist = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 3.0), mistMat);
-mist.rotation.y = Math.PI/2;
-mist.position.set(2.5, 0.4, 0);
-scene.add(mist);
-
-// --- Water bead sprites ---
-const beadGroup = new THREE.Group();
-scene.add(beadGroup);
-function makeBead() {
-  const g = new THREE.SphereGeometry(0.035 + Math.random()*0.03, 8, 8);
-  const m = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    roughness: 0.05,
-    transmission: 0.9,
-    thickness: 0.1,
-    ior: 1.33,
-    opacity: 0.95,
-    transparent: true,
-  });
-  const b = new THREE.Mesh(g, m);
-  b.userData.vy = 0.002 + Math.random()*0.004;
-  b.userData.life = 0;
-  // random point on chassis top
-  b.position.set(-1.6 + Math.random()*3.2, 0.55, -0.65 + Math.random()*1.3);
-  return b;
-}
-
-// --- Reveal animation state ---
-let revealT = 0;      // 0..1 over ~3s
-let revealing = true;
-function startReveal() {
-  revealT = 0; revealing = true;
-  // clear beads
-  while (beadGroup.children.length) {
-    const c = beadGroup.children.pop();
-    c.geometry.dispose(); c.material.dispose();
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
   }
-}
+  window.addEventListener('resize', resize); resize();
 
-document.getElementById('replay').addEventListener('click', startReveal);
-
-// Resize
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// Animate
-const clock = new THREE.Clock();
-function animate() {
-  const dt = clock.getDelta();
-  const t = clock.elapsedTime;
-
-  // Car slow turntable
-  car.rotation.y += dt * 0.15;
-
-  // Reveal progress
-  if (revealing) {
-    revealT += dt / 3.0;
-    if (revealT >= 1) { revealT = 1; revealing = false; }
-    // Mist sweeps from +x to -x
-    const mx = THREE.MathUtils.lerp(2.5, -2.5, revealT);
-    mist.position.x = mx;
-    mist.material.opacity = Math.sin(revealT * Math.PI) * 0.55;
-
-    // Animate clearcoat + roughness
-    bodyMat.clearcoat = THREE.MathUtils.smoothstep(revealT, 0.0, 1.0);
-    bodyMat.roughness = THREE.MathUtils.lerp(0.55, 0.08, revealT);
-    bodyMat.needsUpdate = true;
-  } else {
-    // Drift a couple of beads in per frame
-    if (Math.random() < 0.4 && beadGroup.children.length < 60) {
-      beadGroup.add(makeBead());
+  // Mist particles — tiny spray droplets
+  const mistParts = [];
+  function spawnMist(x, y) {
+    for (let i = 0; i < 6; i++) {
+      mistParts.push({
+        x: x + (Math.random() - 0.5) * 40,
+        y: y + (Math.random() - 0.5) * 30,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: -0.3 - Math.random() * 0.8,
+        r: 0.8 + Math.random() * 1.8,
+        life: 0, maxLife: 600 + Math.random() * 800
+      });
     }
-    for (let i = beadGroup.children.length-1; i>=0; i--){
-      const b = beadGroup.children[i];
-      b.userData.life += dt;
-      // beads roll along +x with slight drift, fall off the edge
-      b.position.x += (0.2 + Math.random()*0.1) * dt;
-      b.position.y -= b.userData.vy;
-      if (b.position.x > 2.2 || b.userData.life > 2.8) {
-        beadGroup.remove(b);
-        b.geometry.dispose(); b.material.dispose();
+  }
+
+  // Water beads
+  const beads = [];
+  function spawnBead() {
+    beads.push({
+      x: W * 0.18 + Math.random() * W * 0.64,
+      y: H * 0.32 + Math.random() * H * 0.3,
+      vy: 0.25 + Math.random() * 0.35,
+      r: 2 + Math.random() * 4,
+      life: 0
+    });
+  }
+
+  // Glossy sheen — horizontal light reflection
+  let sheenX = -0.2;
+
+  let phase = 'wait'; // wait → spray → reveal → bead
+  let t0 = performance.now();
+  let sweepX = 0;
+
+  function startReveal() {
+    mistParts.length = 0; beads.length = 0;
+    bg.classList.remove('coated');
+    sheenX = -0.2; sweepX = 0;
+    phase = 'spray'; t0 = performance.now();
+    phaseLabel.textContent = 'Spray Application';
+  }
+
+  bg.addEventListener('load', () => { phaseLabel.textContent = 'Ready'; setTimeout(startReveal, 600); });
+  if (bg.complete) { phaseLabel.textContent = 'Ready'; setTimeout(startReveal, 600); }
+
+  document.getElementById('replay').addEventListener('click', startReveal);
+
+  let last = performance.now();
+  function loop(now) {
+    const dt = Math.min(40, now - last); last = now;
+    const elapsed = now - t0;
+
+    ctx.clearRect(0, 0, W, H);
+
+    if (phase === 'spray') {
+      // sweep the mist nozzle across the car area
+      sweepX = elapsed / 2800;
+      if (sweepX > 1) {
+        sweepX = 1; phase = 'reveal'; t0 = now;
+        bg.classList.add('coated');
+        phaseLabel.textContent = 'Ceramic Bonding';
       }
-    }
-  }
+      // spawn mist along sweep front
+      const nozzleX = W * 0.15 + sweepX * W * 0.7;
+      const nozzleY = H * 0.45 + Math.sin(now * 0.004) * H * 0.1;
+      spawnMist(nozzleX, nozzleY);
 
-  controls.update();
-  renderer.render(scene, camera);
-  requestAnimationFrame(animate);
-}
-startReveal();
-animate();
+      // spray beam — directional glow from nozzle
+      const beamGrd = ctx.createRadialGradient(nozzleX, nozzleY, 0, nozzleX, nozzleY, 120);
+      beamGrd.addColorStop(0, 'rgba(220,235,255,0.18)');
+      beamGrd.addColorStop(0.4, 'rgba(200,220,255,0.07)');
+      beamGrd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = beamGrd;
+      ctx.fillRect(0, 0, W, H);
+
+      // trailing coating sheen (area already sprayed)
+      const sheenGrd = ctx.createLinearGradient(W * 0.15, 0, nozzleX, 0);
+      sheenGrd.addColorStop(0, 'rgba(255,255,255,0.0)');
+      sheenGrd.addColorStop(0.7, 'rgba(255,255,255,0.04)');
+      sheenGrd.addColorStop(1, 'rgba(255,255,255,0.0)');
+      ctx.fillStyle = sheenGrd;
+      ctx.fillRect(0, H * 0.22, W, H * 0.55);
+    }
+
+    if (phase === 'reveal') {
+      sheenX += dt * 0.00045;
+      // animated specular reflection sweeping across the car
+      const sx = W * (0.1 + sheenX * 0.85);
+      const sheenGrd = ctx.createLinearGradient(sx - 80, 0, sx + 120, 0);
+      sheenGrd.addColorStop(0, 'rgba(255,255,255,0)');
+      sheenGrd.addColorStop(0.3, 'rgba(255,255,255,0.04)');
+      sheenGrd.addColorStop(0.5, 'rgba(255,255,255,0.14)');
+      sheenGrd.addColorStop(0.7, 'rgba(255,255,255,0.06)');
+      sheenGrd.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = sheenGrd;
+      ctx.fillRect(0, H * 0.25, W, H * 0.5);
+
+      if (sheenX > 1) { phase = 'bead'; t0 = now; phaseLabel.textContent = 'Hydrophobic Effect'; }
+    }
+
+    if (phase === 'bead') {
+      // ambient specular gloss (now permanent)
+      const ambientGrd = ctx.createLinearGradient(0, H * 0.25, W, H * 0.6);
+      ambientGrd.addColorStop(0, 'rgba(255,255,255,0)');
+      ambientGrd.addColorStop(0.4, 'rgba(255,255,255,0.05)');
+      ambientGrd.addColorStop(0.65, 'rgba(255,255,255,0.10)');
+      ambientGrd.addColorStop(1, 'rgba(255,255,255,0.03)');
+      ctx.fillStyle = ambientGrd;
+      ctx.fillRect(0, 0, W, H);
+
+      if (Math.random() < 0.45 && beads.length < 55) spawnBead();
+    }
+
+    // Update + draw mist particles
+    for (let i = mistParts.length - 1; i >= 0; i--) {
+      const p = mistParts[i];
+      p.x += p.vx; p.y += p.vy * (dt / 16); p.vy *= 0.985; p.life += dt;
+      if (p.life > p.maxLife) { mistParts.splice(i, 1); continue; }
+      const fadeIn = Math.min(1, p.life / 80);
+      const fadeOut = 1 - Math.max(0, (p.life - p.maxLife * 0.6) / (p.maxLife * 0.4));
+      const a = fadeIn * fadeOut * 0.65;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,220,255,${a})`; ctx.fill();
+    }
+
+    // Update + draw beads
+    for (let i = beads.length - 1; i >= 0; i--) {
+      const b = beads[i];
+      b.y += b.vy * (dt / 16); b.life += dt;
+      if (b.y > H * 0.78 || b.life > 2800) { beads.splice(i, 1); continue; }
+      // main bead
+      const grd = ctx.createRadialGradient(b.x - b.r * 0.3, b.y - b.r * 0.3, b.r * 0.1, b.x, b.y, b.r);
+      grd.addColorStop(0, 'rgba(255,255,255,0.95)');
+      grd.addColorStop(0.4, 'rgba(210,235,255,0.75)');
+      grd.addColorStop(1, 'rgba(180,210,255,0.25)');
+      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fillStyle = grd; ctx.fill();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
 </script>
 </body>
 </html>

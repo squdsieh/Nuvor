@@ -5,37 +5,42 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Nuvor Mockup C — Protection Shield Hologram</title>
 <style>
-  :root { --red:#8b0000; --bk:#000; --w:#fff; }
+  :root { --red:#8b0000; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; background: #000; color: #fff; font-family: 'Outfit', system-ui, sans-serif; overflow: hidden; }
   .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  #car-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;
+    filter: brightness(0.45) saturate(0.7) blur(0px); }
   #c { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-  .hero-ov { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.75) 100%); z-index: 2; pointer-events: none; }
-  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; pointer-events: none; }
-  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; margin-bottom: 1rem; }
-  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: 0.02em; text-shadow: 0 2px 24px rgba(0,0,0,0.9); }
+  .hero-ov { position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 70% at 50% 55%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.72) 100%);
+    z-index: 2; pointer-events: none; }
+  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; margin-top: -12vh; }
+  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; margin-bottom: 1rem; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.2rem); line-height: 1.05; text-shadow: 0 2px 30px rgba(0,0,0,0.9); }
   .hero-title .r { color: var(--red); }
-  .hero-sub { margin-top: 1rem; opacity: 0.85; font-size: clamp(0.95rem, 1.3vw, 1.1rem); }
-  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
-  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); }
-  .label { position: absolute; z-index: 4; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 0.3em; color: #fff; padding: 4px 10px; border: 1px solid rgba(139,0,0,0.6); border-radius: 999px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.35s ease; white-space: nowrap; }
+  .hero-sub { margin-top: 0.8rem; opacity: 0.9; font-size: clamp(0.9rem, 1.2vw, 1.05rem); }
+  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); }
+  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); }
+  .label { position: absolute; z-index: 4; font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 0.25em;
+    color: #fff; padding: 3px 9px; border: 1px solid rgba(139,0,0,0.7); border-radius: 999px;
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+    transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; white-space: nowrap; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400&display=swap" rel="stylesheet" />
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
 </head>
 <body>
-<div class="badge">Mockup C · Protection Shield Hologram</div>
+<div class="badge">Option C · Protection Shield Hologram</div>
 <a class="back" href="./index.html">← All mockups</a>
 
 <section class="hero">
+  <img id="car-bg"
+    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    alt="Bugatti Chiron" />
   <canvas id="c"></canvas>
   <div class="hero-ov"></div>
   <div class="hero-c">
@@ -45,7 +50,7 @@
   </div>
   <div class="label" id="lbl-0">CERAMIC</div>
   <div class="label" id="lbl-1">PPF</div>
-  <div class="label" id="lbl-2">UV</div>
+  <div class="label" id="lbl-2">UV BLOCK</div>
   <div class="label" id="lbl-3">TINT</div>
 </section>
 
@@ -59,215 +64,147 @@ const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearAlpha(0);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x000000, 0.08);
+const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 0.8, 7.5);
+camera.lookAt(0, 0, 0);
 
-const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 0.1, 100);
-camera.position.set(0, 1.2, 6.5);
-camera.lookAt(0, 0.3, 0);
-
-// Postprocessing: bloom
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.9, 0.8, 0.2);
+const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.1, 0.75, 0.15);
 composer.addPass(bloom);
 
-// --- Car silhouette (reused from hero3d.js, normalized 0..1)
-const silhouette = [
-  [0.10,0.65],[0.14,0.55],[0.22,0.48],[0.32,0.44],[0.40,0.38],[0.52,0.34],
-  [0.62,0.36],[0.70,0.42],[0.78,0.48],[0.86,0.55],[0.90,0.62],[0.90,0.70],
+// Car silhouette (same pts as hero3d.js) extruded into 3D wireframe
+const sil = [
+  [0.10,0.65],[0.13,0.56],[0.20,0.48],[0.30,0.44],[0.40,0.38],[0.52,0.34],
+  [0.63,0.36],[0.70,0.42],[0.78,0.48],[0.86,0.55],[0.90,0.62],[0.90,0.70],
   [0.80,0.72],[0.74,0.72],[0.70,0.66],[0.62,0.62],[0.54,0.62],[0.46,0.64],
   [0.38,0.66],[0.30,0.68],[0.22,0.70],[0.14,0.70],[0.10,0.68]
 ];
 const shape = new THREE.Shape();
-silhouette.forEach(([x,y],i)=>{
-  // center and flip Y
-  const px = (x - 0.5) * 4.0;
-  const py = -(y - 0.5) * 1.8;
-  if (i===0) shape.moveTo(px, py); else shape.lineTo(px, py);
+sil.forEach(([x, y], i) => {
+  const px = (x - 0.5) * 4.2, py = -(y - 0.5) * 1.6;
+  i === 0 ? shape.moveTo(px, py) : shape.lineTo(px, py);
 });
-const extrudeSettings = { depth: 1.4, bevelEnabled: true, bevelSize: 0.04, bevelThickness: 0.04, bevelSegments: 2, steps: 1, curveSegments: 16 };
-const carGeo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+const carGeo = new THREE.ExtrudeGeometry(shape, { depth: 1.1, bevelEnabled: false });
 carGeo.center();
 
-const carWireMat = new THREE.MeshBasicMaterial({
-  color: 0xff1a1a,
-  wireframe: true,
-  transparent: true,
-  opacity: 0.9,
-});
-const carFillMat = new THREE.MeshBasicMaterial({
-  color: 0x1a0000,
-  transparent: true,
-  opacity: 0.4,
-  side: THREE.FrontSide,
-});
-
-const carFill = new THREE.Mesh(carGeo, carFillMat);
-const carWire = new THREE.Mesh(carGeo, carWireMat);
+const carFill = new THREE.Mesh(carGeo, new THREE.MeshBasicMaterial({ color: 0x0d0003, transparent: true, opacity: 0.55 }));
+const carWire = new THREE.Mesh(carGeo, new THREE.MeshBasicMaterial({ color: 0xff1a1a, wireframe: true, transparent: true, opacity: 0.85 }));
 const car = new THREE.Group();
-car.add(carFill);
-car.add(carWire);
+car.add(carFill, carWire);
+// Position car to sit over the Bugatti photo car area (lower half, centered)
+car.position.set(0, -0.15, 0);
 scene.add(car);
 
-// --- Hexagonal shield (wireframe icosphere + custom shader for pulse)
-const shieldGeo = new THREE.IcosahedronGeometry(2.6, 3);
+// Pulsating hex shield — icosahedron
+const shieldGeo = new THREE.IcosahedronGeometry(2.9, 3);
 const shieldMat = new THREE.ShaderMaterial({
-  transparent: true,
-  blending: THREE.AdditiveBlending,
-  depthWrite: false,
-  uniforms: {
-    uTime: { value: 0 },
-    uRipple: { value: 0 },
-    uRippleDir: { value: new THREE.Vector3(1,0,0) },
-    uColor: { value: new THREE.Color(0xff2a2a) },
-  },
-  vertexShader: `
-    varying vec3 vPos;
-    varying vec3 vNormal;
-    void main() {
-      vPos = position;
-      vNormal = normal;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    varying vec3 vPos;
-    varying vec3 vNormal;
-    uniform float uTime;
-    uniform float uRipple;
-    uniform vec3 uRippleDir;
-    uniform vec3 uColor;
-
-    // Fake hex grid by quantising UV
-    float hex(vec3 p) {
-      float a = atan(p.x, p.z);
-      float r = length(p.xz);
-      float cells = sin(a*6.0 + r*4.0 + uTime*0.4);
-      return smoothstep(0.3, 0.9, abs(cells));
-    }
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+  uniforms: { uTime: { value: 0 }, uRipple: { value: 0 }, uRippleDir: { value: new THREE.Vector3(1, 0, 0) } },
+  vertexShader: `varying vec3 vPos; varying vec3 vNormal;
+    void main() { vPos = position; vNormal = normal; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+  fragmentShader: `varying vec3 vPos; varying vec3 vNormal;
+    uniform float uTime; uniform float uRipple; uniform vec3 uRippleDir;
     void main() {
       vec3 n = normalize(vNormal);
-      float fres = pow(1.0 - abs(dot(n, vec3(0.0,0.0,1.0))), 2.0);
-      float grid = hex(vPos);
-      float pulse = 0.5 + 0.5*sin(uTime*1.5 + vPos.y*2.0);
+      float fres = pow(1.0 - abs(dot(n, vec3(0,0,1))), 2.2);
+      float hex = sin(vPos.x * 3.5 + uTime * 0.3) * sin(vPos.y * 3.5) * sin(vPos.z * 2.5 + uTime * 0.2);
+      hex = smoothstep(0.2, 0.9, abs(hex));
+      float pulse = 0.5 + 0.5 * sin(uTime * 1.4 + vPos.y * 2.0);
       float d = dot(normalize(vPos), normalize(uRippleDir));
-      float ripple = uRipple * smoothstep(0.2, 1.0, d) * (0.5 + 0.5*sin(uTime*10.0));
-      float a = (fres*0.5 + grid*0.25 + pulse*0.08 + ripple*0.4);
-      gl_FragColor = vec4(uColor * (0.5 + pulse*0.5 + ripple), a);
-    }
-  `,
+      float ripple = uRipple * smoothstep(0.3, 1.0, d) * abs(sin(uTime * 8.0));
+      float a = fres * 0.55 + hex * 0.2 + pulse * 0.06 + ripple * 0.38;
+      vec3 col = mix(vec3(0.6, 0.0, 0.0), vec3(1.0, 0.3, 0.3), pulse + ripple);
+      gl_FragColor = vec4(col, a);
+    }`,
 });
 const shield = new THREE.Mesh(shieldGeo, shieldMat);
 scene.add(shield);
 
-// Outer thin wireframe ring of the shield for readability
-const shieldOutline = new THREE.LineSegments(
-  new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.6, 1)),
-  new THREE.LineBasicMaterial({ color: 0x8b0000, transparent: true, opacity: 0.6 })
+// Thin wireframe outer ring
+const shieldOuter = new THREE.LineSegments(
+  new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.9, 1)),
+  new THREE.LineBasicMaterial({ color: 0x660000, transparent: true, opacity: 0.5 })
 );
-scene.add(shieldOutline);
+scene.add(shieldOuter);
 
-// --- Orbiting icon nodes (4)
-const nodes = [];
-const nodeColors = [0xff3b3b, 0xffffff, 0xffc13b, 0x3bb0ff];
-const nodeLabels = ['CERAMIC','PPF','UV','TINT'];
-for (let i = 0; i < 4; i++) {
+// Orbiting icon nodes
+const nodeColors = [0xff3030, 0xffffff, 0xffd030, 0x30aaff];
+const labels = ['lbl-0', 'lbl-1', 'lbl-2', 'lbl-3'];
+const nodes = nodeColors.map((col, i) => {
   const g = new THREE.Group();
-  const core = new THREE.Mesh(
-    new THREE.SphereGeometry(0.13, 16, 16),
-    new THREE.MeshBasicMaterial({ color: nodeColors[i] })
-  );
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(0.11, 14, 14), new THREE.MeshBasicMaterial({ color: col })));
   const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(0.24, 0.018, 8, 32),
-    new THREE.MeshBasicMaterial({ color: nodeColors[i], transparent: true, opacity: 0.7 })
+    new THREE.TorusGeometry(0.22, 0.016, 7, 28),
+    new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.75 })
   );
-  g.add(core); g.add(ring);
-  nodes.push({ group: g, ring, core, phase: (i/4) * Math.PI * 2, labelEl: document.getElementById('lbl-'+i) });
+  g.add(ring);
   scene.add(g);
-}
+  return { group: g, ring, phase: (i / 4) * Math.PI * 2, labelEl: document.getElementById(labels[i]) };
+});
 
-// Starfield
-const starGeo = new THREE.BufferGeometry();
-const starPositions = [];
-for (let i = 0; i < 400; i++) {
-  starPositions.push((Math.random()-0.5)*40, (Math.random()-0.5)*20, (Math.random()-0.5)*40 - 10);
-}
-starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
-const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0x553333, size: 0.03, transparent: true, opacity: 0.7 }));
+// Ambient star haze (very subtle, so the car photo shows through)
+const starPos = [];
+for (let i = 0; i < 250; i++) starPos.push((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 15, (Math.random() - 0.5) * 20 - 5);
+const stars = new THREE.Points(
+  new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3)),
+  new THREE.PointsMaterial({ color: 0x440000, size: 0.025, transparent: true, opacity: 0.6 })
+);
 scene.add(stars);
 
-// Resize
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   composer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Project 3D point to screen coords for HTML labels
-const tmpVec = new THREE.Vector3();
-function projectToScreen(obj) {
-  obj.getWorldPosition(tmpVec);
-  tmpVec.project(camera);
-  const x = (tmpVec.x * 0.5 + 0.5) * window.innerWidth;
-  const y = (-tmpVec.y * 0.5 + 0.5) * window.innerHeight;
-  return { x, y, z: tmpVec.z };
+// Project 3D → screen for HTML labels
+const tmp = new THREE.Vector3();
+function toScreen(mesh) {
+  mesh.getWorldPosition(tmp);
+  tmp.project(camera);
+  return { x: (tmp.x * 0.5 + 0.5) * window.innerWidth, y: (-tmp.y * 0.5 + 0.5) * window.innerHeight, z: tmp.z };
 }
 
-// Animate
-const clock = new THREE.Clock();
-let rippleFrom = 0;
 let activeNode = -1;
-
+const clock = new THREE.Clock();
 function animate() {
-  const dt = clock.getDelta();
-  const t = clock.elapsedTime;
+  const dt = clock.getDelta(), t = clock.elapsedTime;
 
-  // Car: slight bobbing and yaw
-  car.rotation.y += dt * 0.35;
-  car.position.y = Math.sin(t*0.8) * 0.08;
-  carWire.material.opacity = 0.75 + Math.sin(t*1.2)*0.15;
+  car.rotation.y = Math.sin(t * 0.25) * 0.18;
+  car.position.y = -0.15 + Math.sin(t * 0.7) * 0.07;
+  carWire.material.opacity = 0.7 + Math.sin(t * 1.3) * 0.2;
 
-  // Shield: slow rotation
-  shield.rotation.y = t * 0.1;
-  shield.rotation.x = Math.sin(t*0.3) * 0.1;
-  shieldOutline.rotation.copy(shield.rotation);
+  shield.rotation.y = t * 0.09;
+  shield.rotation.x = Math.sin(t * 0.28) * 0.08;
+  shieldOuter.rotation.copy(shield.rotation);
   shieldMat.uniforms.uTime.value = t;
-  shieldMat.uniforms.uRipple.value *= 0.93; // decay
+  shieldMat.uniforms.uRipple.value *= 0.92;
 
-  // Orbiting nodes
-  const R = 2.9;
+  const R = 3.2;
   nodes.forEach((n, i) => {
-    const ang = n.phase + t * 0.4;
-    const y = Math.sin(ang*2 + i) * 0.35;
-    n.group.position.set(Math.cos(ang)*R, y, Math.sin(ang)*R);
-    n.ring.rotation.x = t * 0.6 + i;
-    n.ring.rotation.y = t * 0.4;
+    const ang = n.phase + t * 0.38;
+    n.group.position.set(Math.cos(ang) * R, Math.sin(ang * 1.3 + i) * 0.45, Math.sin(ang) * R * 0.7);
+    n.ring.rotation.x = t * 0.55 + i;
 
-    // update label position
-    const p = projectToScreen(n.group);
+    const p = toScreen(n.group);
     n.labelEl.style.left = p.x + 'px';
-    n.labelEl.style.top = (p.y - 26) + 'px';
-
-    // label visible when node is closest to camera
-    const dot = Math.cos(ang); // assuming camera on +z
-    const visible = dot > 0.6 && p.z < 1;
+    n.labelEl.style.top = (p.y - 24) + 'px';
+    const visible = Math.cos(ang) > 0.55 && p.z < 1;
     n.labelEl.style.opacity = visible ? 1 : 0;
 
-    // when a node crosses the front, pulse the shield
     if (visible && activeNode !== i) {
       activeNode = i;
       shieldMat.uniforms.uRipple.value = 1.0;
       shieldMat.uniforms.uRippleDir.value.set(Math.cos(ang), 0, Math.sin(ang));
     }
   });
-  // reset active if nothing is in front
-  if (!nodes.some((n,i)=>Math.cos(n.phase + t*0.4) > 0.6)) activeNode = -1;
 
-  stars.rotation.y += dt * 0.01;
-
+  stars.rotation.y += dt * 0.008;
   composer.render();
   requestAnimationFrame(animate);
 }

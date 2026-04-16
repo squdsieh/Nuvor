@@ -5,31 +5,36 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Nuvor Mockup A — Particle PPF Unwrap</title>
 <style>
-  :root { --red:#8b0000; --bk:#000; --w:#fff; }
+  :root { --red:#8b0000; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; background: #000; color: #fff; font-family: 'Outfit', system-ui, sans-serif; }
+  html, body { height: 100%; background: #000; color: #fff; font-family: 'Outfit', system-ui, sans-serif; overflow: hidden; }
   .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  #car-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.55) saturate(0.85); transition: filter 1.2s ease; }
+  #car-bg.coated { filter: brightness(0.7) saturate(1.2); }
   #c { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-  .hero-ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.8)); z-index: 2; pointer-events: none; }
-  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; }
-  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; margin-bottom: 1rem; }
-  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: 0.02em; text-shadow: 0 2px 20px rgba(0,0,0,0.7); }
+  .hero-ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.65) 100%); z-index: 2; pointer-events: none; }
+  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; margin-top: -12vh; }
+  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; margin-bottom: 1rem; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.2rem); line-height: 1.05; text-shadow: 0 2px 30px rgba(0,0,0,0.9); }
   .hero-title .r { color: var(--red); }
-  .hero-sub { margin-top: 1rem; opacity: 0.85; font-size: clamp(0.95rem, 1.3vw, 1.1rem); }
-  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
+  .hero-sub { margin-top: 0.8rem; opacity: 0.9; font-size: clamp(0.9rem, 1.2vw, 1.05rem); }
+  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); }
   .controls { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; }
-  .controls button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; backdrop-filter: blur(6px); }
+  .controls button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; }
   .controls button:hover { background: rgba(139,0,0,0.4); border-color: var(--red); }
-  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); }
+  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); }
+  .phase-label { position: fixed; bottom: 52px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400&display=swap" rel="stylesheet" />
 </head>
 <body>
-<div class="badge">Mockup A · Particle PPF Unwrap (Canvas 2D)</div>
+<div class="badge">Option A · Particle PPF Unwrap</div>
 <a class="back" href="./index.html">← All mockups</a>
-
 <section class="hero">
+  <img id="car-bg"
+    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    alt="Bugatti Chiron" />
   <canvas id="c"></canvas>
   <div class="hero-ov"></div>
   <div class="hero-c">
@@ -38,206 +43,180 @@
     <p class="hero-sub">Premium paint protection — wrap, coat, shield.</p>
   </div>
 </section>
-
-<div class="controls">
-  <button id="replay">Replay</button>
-</div>
+<div class="phase-label" id="phase-label">Forming</div>
+<div class="controls"><button id="replay">Replay</button></div>
 
 <script>
 (() => {
   const canvas = document.getElementById('c');
   const ctx = canvas.getContext('2d');
-  let W=0, H=0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-
-  // Simple sports-car silhouette control points (normalized 0..1)
-  const silhouette = [
-    [0.10,0.65],[0.14,0.55],[0.22,0.48],[0.32,0.44],[0.40,0.38],[0.52,0.34],
-    [0.62,0.36],[0.70,0.42],[0.78,0.48],[0.86,0.55],[0.90,0.62],[0.90,0.70],
-    [0.80,0.72],[0.74,0.72],[0.70,0.66],[0.62,0.62],[0.54,0.62],[0.46,0.64],
-    [0.38,0.66],[0.30,0.68],[0.22,0.70],[0.14,0.70],[0.10,0.68]
-  ];
-
-  const N = 2200; // lightweight for mockup
-  const parts = [];
-  let phase = 'form'; // form → settle → unwrap → bead → loop
-  let t0 = performance.now();
+  const bg = document.getElementById('car-bg');
+  const phaseLabel = document.getElementById('phase-label');
+  let W = 0, H = 0;
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
   function resize() {
-    W = canvas.clientWidth = window.innerWidth;
-    H = canvas.clientHeight = window.innerHeight;
+    W = window.innerWidth; H = window.innerHeight;
     canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
   window.addEventListener('resize', resize); resize();
 
-  function pointOnSilhouette() {
-    // random point inside polygon by rejection with bounding box (cheap & fine for mockup)
-    const minX=0.10, maxX=0.90, minY=0.34, maxY=0.72;
-    for (let k=0;k<20;k++){
-      const x = minX + Math.random()*(maxX-minX);
-      const y = minY + Math.random()*(maxY-minY);
-      if (pointInPoly(x,y)) return [x,y];
-    }
-    return silhouette[(Math.random()*silhouette.length)|0];
-  }
-  function pointInPoly(x, y){
-    let inside=false;
-    for (let i=0, j=silhouette.length-1; i<silhouette.length; j=i++){
-      const [xi,yi]=silhouette[i], [xj,yj]=silhouette[j];
-      const intersect = ((yi>y)!=(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi);
-      if (intersect) inside = !inside;
+  // Simplified car silhouette (same 40 pts from hero3d.js, normalized 0-1)
+  const sil = [
+    [0.10,0.65],[0.13,0.56],[0.20,0.48],[0.30,0.44],[0.40,0.38],[0.52,0.34],
+    [0.63,0.36],[0.70,0.42],[0.78,0.48],[0.86,0.55],[0.90,0.62],[0.90,0.70],
+    [0.80,0.72],[0.74,0.72],[0.70,0.66],[0.62,0.62],[0.54,0.62],[0.46,0.64],
+    [0.38,0.66],[0.30,0.68],[0.22,0.70],[0.14,0.70],[0.10,0.68]
+  ];
+
+  function pointInPoly(x, y) {
+    let inside = false;
+    for (let i = 0, j = sil.length - 1; i < sil.length; j = i++) {
+      const [xi, yi] = sil[i], [xj, yj] = sil[j];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
     }
     return inside;
   }
 
-  function init(){
-    parts.length = 0;
-    for (let i=0;i<N;i++){
-      const [tx,ty] = pointOnSilhouette();
-      parts.push({
-        x: Math.random()*1, y: Math.random()*1,
-        tx, ty,
-        vx: 0, vy: 0,
-        a: 0.3 + Math.random()*0.7,
-      });
+  function randomOnCar() {
+    for (let k = 0; k < 40; k++) {
+      const x = 0.10 + Math.random() * 0.80, y = 0.34 + Math.random() * 0.38;
+      if (pointInPoly(x, y)) return [x, y];
+    }
+    return sil[(Math.random() * sil.length) | 0];
+  }
+
+  function project(nx, ny) {
+    const w = Math.min(W * 0.85, 1100), h = w * 0.42;
+    const ox = (W - w) / 2, oy = (H - h) / 2 + H * 0.04;
+    return [ox + nx * w, oy + ny * h];
+  }
+
+  const N = 2400;
+  const parts = [];
+  let phase = 'form', t0 = performance.now();
+  const beads = [];
+
+  function init() {
+    parts.length = 0; beads.length = 0;
+    bg.classList.remove('coated');
+    for (let i = 0; i < N; i++) {
+      const [tx, ty] = randomOnCar();
+      parts.push({ x: Math.random(), y: Math.random(), tx, ty, a: 0.4 + Math.random() * 0.6 });
     }
     phase = 'form'; t0 = performance.now();
+    phaseLabel.textContent = 'Forming';
   }
   init();
 
-  function project(nx, ny){
-    // center the car in a max 1200px wide box
-    const w = Math.min(W*0.9, 1200), h = w*0.45;
-    const ox = (W - w)/2, oy = (H - h)/2 + 20;
-    return [ox + nx*w, oy + ny*h];
-  }
-
-  // A diagonal shimmer "film" overlay for the unwrap phase
-  function drawFilm(progress){
-    const w = Math.min(W*0.9, 1200), h = w*0.45;
-    const ox = (W - w)/2, oy = (H - h)/2 + 20;
-    // clip to silhouette shape
+  function drawSilhouette(alpha = 1) {
     ctx.save();
     ctx.beginPath();
-    silhouette.forEach(([x,y],i)=>{
-      const [px,py] = [ox + x*w, oy + y*h];
-      if (i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    sil.forEach(([x, y], i) => {
+      const [px, py] = project(x, y);
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
     });
     ctx.closePath();
-    ctx.clip();
-
-    // film fill
-    const grd = ctx.createLinearGradient(ox, oy, ox+w, oy+h);
-    grd.addColorStop(0, 'rgba(255,255,255,0.00)');
-    grd.addColorStop(Math.max(0, progress-0.15), 'rgba(255,255,255,0.00)');
-    grd.addColorStop(progress, 'rgba(255,255,255,0.22)');
-    grd.addColorStop(Math.min(1, progress+0.03), 'rgba(255,255,255,0.45)');
-    grd.addColorStop(Math.min(1, progress+0.18), 'rgba(255,255,255,0.10)');
-    grd.addColorStop(1, 'rgba(255,255,255,0.04)');
-    ctx.fillStyle = grd;
-    ctx.fillRect(ox, oy, w, h);
-
-    // subtle horizontal shimmer band traveling with the unwrap
-    const bandX = ox + progress*w;
-    const grd2 = ctx.createLinearGradient(bandX-40, 0, bandX+40, 0);
-    grd2.addColorStop(0,'rgba(255,255,255,0)');
-    grd2.addColorStop(0.5,'rgba(255,255,255,0.45)');
-    grd2.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.fillStyle = grd2;
-    ctx.fillRect(bandX-40, oy, 80, h);
-
-    ctx.restore();
-
-    // outline the car for readability
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    silhouette.forEach(([x,y],i)=>{
-      const [px,py] = [ox + x*w, oy + y*h];
-      if (i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-    });
-    ctx.closePath();
+    ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.3})`;
+    ctx.lineWidth = 1;
     ctx.stroke();
     ctx.restore();
   }
 
-  // Water beads during 'bead' phase
-  const beads = [];
-  function spawnBead(){
-    const x = 0.15 + Math.random()*0.7, y = 0.38 + Math.random()*0.25;
-    beads.push({x, y, vy: 0.0005 + Math.random()*0.0008, r: 1 + Math.random()*2.2, life: 0});
+  function clipToSil(fn) {
+    ctx.save();
+    ctx.beginPath();
+    sil.forEach(([x, y], i) => {
+      const [px, py] = project(x, y);
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    });
+    ctx.closePath();
+    ctx.clip();
+    fn();
+    ctx.restore();
   }
-  function drawBeads(dt){
-    if (Math.random() < 0.35) spawnBead();
-    for (let i=beads.length-1;i>=0;i--){
+
+  function drawFilm(progress) {
+    const [x0, y0] = project(0.10, 0.34), [x1, y1] = project(0.90, 0.72);
+    const w = x1 - x0, h = y1 - y0;
+    clipToSil(() => {
+      // translucent PPF film coverage
+      const g1 = ctx.createLinearGradient(x0, y0, x0 + w * progress, y0);
+      g1.addColorStop(0, 'rgba(200,230,255,0.08)');
+      g1.addColorStop(0.85, 'rgba(200,230,255,0.12)');
+      g1.addColorStop(1.0, 'rgba(255,255,255,0.0)');
+      ctx.fillStyle = g1;
+      ctx.fillRect(x0, y0, w * progress, h);
+
+      // leading shimmer edge
+      const edgeX = x0 + w * progress;
+      const g2 = ctx.createLinearGradient(edgeX - 30, 0, edgeX + 10, 0);
+      g2.addColorStop(0, 'rgba(255,255,255,0)');
+      g2.addColorStop(0.6, 'rgba(255,255,255,0.55)');
+      g2.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(edgeX - 30, y0, 40, h);
+    });
+  }
+
+  function spawnBead() {
+    const x = 0.15 + Math.random() * 0.70, y = 0.38 + Math.random() * 0.20;
+    beads.push({ x, y, vy: 0.0004 + Math.random() * 0.0006, r: 1.5 + Math.random() * 2.5, life: 0 });
+  }
+
+  function drawBeads(dt) {
+    if (Math.random() < 0.5) spawnBead();
+    for (let i = beads.length - 1; i >= 0; i--) {
       const b = beads[i];
-      b.y += b.vy * dt * 60;
-      b.life += dt;
-      if (b.y > 0.78 || b.life > 3500) { beads.splice(i,1); continue; }
-      const [px,py] = project(b.x, b.y);
-      ctx.beginPath();
-      ctx.arc(px, py, b.r, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(200,230,255,0.75)';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(px - b.r*0.3, py - b.r*0.3, b.r*0.4, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      ctx.fill();
+      b.y += b.vy * dt * 60; b.life += dt;
+      if (b.y > 0.74 || b.life > 3000) { beads.splice(i, 1); continue; }
+      const [px, py] = project(b.x, b.y);
+      ctx.beginPath(); ctx.arc(px, py, b.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200,230,255,0.7)'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px - b.r * 0.3, py - b.r * 0.35, b.r * 0.38, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fill();
     }
   }
 
   let last = performance.now();
-  function loop(now){
-    const dt = Math.min(50, now - last); last = now;
+  function loop(now) {
+    const dt = Math.min(40, now - last); last = now;
     const elapsed = now - t0;
 
-    // Phase machine timings
-    if (phase === 'form' && elapsed > 3500) { phase = 'settle'; t0 = now; }
-    else if (phase === 'settle' && elapsed > 600) { phase = 'unwrap'; t0 = now; }
-    else if (phase === 'unwrap' && elapsed > 2200) { phase = 'bead'; t0 = now; }
-    else if (phase === 'bead' && elapsed > 4000) { init(); } // loop
+    if (phase === 'form' && elapsed > 3500) { phase = 'breathe'; t0 = now; phaseLabel.textContent = 'PPF Application'; }
+    else if (phase === 'breathe' && elapsed > 500) { phase = 'unwrap'; t0 = now; }
+    else if (phase === 'unwrap' && elapsed > 2400) { phase = 'bead'; t0 = now; bg.classList.add('coated'); phaseLabel.textContent = 'Hydrophobic Surface'; }
+    else if (phase === 'bead' && elapsed > 4500) init();
 
-    // clear
-    ctx.fillStyle = 'rgba(0,0,0,0.22)';
-    ctx.fillRect(0,0,W,H);
+    ctx.clearRect(0, 0, W, H);
 
-    // particles
-    const formT = phase === 'form' ? Math.min(1, elapsed/3500) : 1;
-    const ease = t => 1 - Math.pow(1-t, 3);
-    const k = ease(formT);
+    const formT = phase === 'form' ? Math.min(1, elapsed / 3500) : 1;
+    const k = 1 - Math.pow(1 - formT, 3);
 
-    for (let i=0;i<parts.length;i++){
+    // particles — rendered as crisp holographic dots over photo
+    for (let i = 0; i < parts.length; i++) {
       const p = parts[i];
-      const [tx,ty] = project(p.tx, p.ty);
-      const [sx,sy] = [p.x*W, p.y*H];
-      const x = sx + (tx - sx) * k;
-      const y = sy + (ty - sy) * k;
-      const breathe = phase !== 'form' ? (Math.sin(now*0.002 + i*0.01)*0.6) : 0;
-      // red color sweep during form→settle
-      const sweep = (Math.sin(now*0.0012 + p.tx*6) + 1)/2;
-      const red = Math.min(1, k*1.2) * sweep;
-      const alpha = p.a * (0.4 + 0.6*k);
-      ctx.fillStyle = `rgba(${180 + red*60}, ${60 - red*40}, ${60 - red*50}, ${alpha})`;
-      ctx.fillRect(x + breathe, y, 1.4, 1.4);
+      const [tx, ty] = project(p.tx, p.ty);
+      const sx = p.x * W, sy = p.y * H;
+      const x = sx + (tx - sx) * k, y = sy + (ty - sy) * k;
+      const breathe = phase !== 'form' ? Math.sin(now * 0.002 + i * 0.012) * 0.5 : 0;
+      const sweep = (Math.sin(now * 0.0013 + p.tx * 6) + 1) / 2;
+      const red = Math.min(1, k * 1.3) * sweep;
+      const alpha = p.a * (0.35 + 0.65 * k);
+      ctx.fillStyle = `rgba(${180 + red * 65},${55 - red * 40},${55 - red * 45},${alpha})`;
+      ctx.fillRect(x + breathe, y, 1.5, 1.5);
     }
 
-    // film unwrap
-    if (phase === 'unwrap') {
-      const u = Math.min(1, elapsed/2200);
-      drawFilm(u);
-    } else if (phase === 'bead') {
-      drawFilm(1);
-      drawBeads(dt);
-    } else if (phase === 'settle') {
-      // faint full-body film preview
-      drawFilm(0.02);
-    }
+    drawSilhouette(k);
+
+    if (phase === 'unwrap') drawFilm(Math.min(1, elapsed / 2400));
+    else if (phase === 'bead') { drawFilm(1); drawBeads(dt); }
 
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
-
   document.getElementById('replay').addEventListener('click', init);
 })();
 </script>
