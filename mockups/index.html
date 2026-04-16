@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nuvor Hero Mockups</title>
+<style>
+  :root { --red:#8b0000; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; background: #0a0a0a; color: #fff; font-family: 'Outfit', system-ui, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 60px 24px 80px; }
+  h1 { font-family: 'Orbitron', sans-serif; font-weight: 800; letter-spacing: 0.02em; font-size: clamp(1.6rem, 3.5vw, 2.6rem); }
+  h1 .r { color: var(--red); }
+  p.lede { margin-top: 10px; opacity: 0.75; max-width: 60ch; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 32px; }
+  .card { display: flex; flex-direction: column; background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden; transition: border-color 0.2s, transform 0.2s; text-decoration: none; color: inherit; }
+  .card:hover { border-color: var(--red); transform: translateY(-2px); }
+  .thumb { height: 180px; background: #000; position: relative; overflow: hidden; }
+  .thumb::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%); pointer-events: none; }
+  .a .thumb { background: radial-gradient(ellipse at center, #2a0000 0%, #000 70%); }
+  .a .thumb::before { content:''; position:absolute; inset:20% 10%; border: 2px solid rgba(255,80,80,0.5); border-radius: 40% 40% 20% 20% / 60% 60% 40% 40%; box-shadow: 0 0 40px rgba(139,0,0,0.4); }
+  .b .thumb { background: linear-gradient(160deg, #1a1a1a 0%, #000 60%); }
+  .b .thumb::before { content:''; position:absolute; left:15%; right:15%; top:40%; bottom:30%; background: linear-gradient(90deg, #222, #444, #222); border-radius: 18px; box-shadow: 0 20px 60px rgba(139,0,0,0.35), 0 0 60px rgba(255,255,255,0.06); }
+  .c .thumb { background: radial-gradient(ellipse at center, #200 0%, #000 70%); }
+  .c .thumb::before { content:''; position:absolute; inset:15%; border: 1px solid rgba(255,40,40,0.35); border-radius: 50%; box-shadow: inset 0 0 40px rgba(255,40,40,0.25), 0 0 40px rgba(139,0,0,0.4); }
+  .c .thumb::after { content: ''; }
+  .meta { padding: 18px; }
+  .tag { display: inline-block; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0.65; margin-bottom: 6px; }
+  .title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; }
+  .desc { font-size: 0.92rem; opacity: 0.8; line-height: 1.4; }
+  .attrs { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .attrs span { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; opacity: 0.8; }
+  .attrs .rec { border-color: var(--red); color: #ffb3b3; }
+  footer { margin-top: 50px; opacity: 0.5; font-size: 12px; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+<main>
+  <h1>Nuvor Hero — <span class="r">3 Mockups</span></h1>
+  <p class="lede">Open each to see the animation live. Replay/drag where supported. Pick one, or mix ideas.</p>
+
+  <div class="grid">
+    <a class="card a" href="./option-a-ppf-unwrap.html">
+      <div class="thumb"></div>
+      <div class="meta">
+        <div class="tag">Option A · Canvas 2D</div>
+        <div class="title">Particle PPF Unwrap</div>
+        <div class="desc">The particle car forms, then a translucent film unwraps over the silhouette with water beads rolling off. Evolution of the current hero.</div>
+        <div class="attrs"><span>0 KB extra</span><span>0.5–1 day</span><span>No licensing</span></div>
+      </div>
+    </a>
+
+    <a class="card b" href="./option-b-ceramic-reveal.html">
+      <div class="thumb"></div>
+      <div class="meta">
+        <div class="tag">Option B · Three.js</div>
+        <div class="title">Ceramic Coating Reveal</div>
+        <div class="desc">A real 3D car on a turntable. A mist sweep transitions paint from matte to liquid-gloss, then water beads up. Drag to orbit.</div>
+        <div class="attrs"><span class="rec">Recommended</span><span>~150 KB + assets</span><span>2–4 days</span></div>
+      </div>
+    </a>
+
+    <a class="card c" href="./option-c-shield-hologram.html">
+      <div class="thumb"></div>
+      <div class="meta">
+        <div class="tag">Option C · Three.js</div>
+        <div class="title">Protection Shield Hologram</div>
+        <div class="desc">Wireframe car inside a pulsating hex shield. Four orbiting icons reveal labels (Ceramic · PPF · UV · Tint) as they pass the front.</div>
+        <div class="attrs"><span>No model licensing</span><span>2–3 days</span><span>Distinctive</span></div>
+      </div>
+    </a>
+  </div>
+
+  <footer>All three mockups are throwaway — the real implementation will reuse the current <code>#hero-canvas</code> element, <code>hero-reveal</code> event, and IntersectionObserver pause.</footer>
+</main>
+</body>
+</html>

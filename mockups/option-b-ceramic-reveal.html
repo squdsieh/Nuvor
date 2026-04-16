@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nuvor Mockup B — Ceramic Coating Reveal</title>
+<style>
+  :root { --red:#8b0000; --bk:#000; --w:#fff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; color: #fff; font-family: 'Outfit', system-ui, sans-serif; overflow: hidden; }
+  .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  #c { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+  .hero-ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.75)); z-index: 2; pointer-events: none; }
+  .hero-c { position: relative; z-index: 3; text-align: center; padding: 0 20px; pointer-events: none; }
+  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; margin-bottom: 1rem; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: 0.02em; text-shadow: 0 2px 24px rgba(0,0,0,0.9); }
+  .hero-title .r { color: var(--red); }
+  .hero-sub { margin-top: 1rem; opacity: 0.85; font-size: clamp(0.95rem, 1.3vw, 1.1rem); }
+  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
+  .controls { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 8px; }
+  .controls button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 14px; border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; backdrop-filter: blur(6px); }
+  .controls button:hover { background: rgba(139,0,0,0.4); border-color: var(--red); }
+  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 12px; padding: 6px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.4); }
+  .hint { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 11px; opacity: 0.6; letter-spacing: 0.15em; text-transform: uppercase; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div class="badge">Mockup B · Three.js Ceramic Coating Reveal</div>
+<a class="back" href="./index.html">← All mockups</a>
+
+<section class="hero">
+  <canvas id="c"></canvas>
+  <div class="hero-ov"></div>
+  <div class="hero-c">
+    <p class="hero-tag">Abu Dhabi · United Arab Emirates</p>
+    <h1 class="hero-title">LIQUID <span class="r">GLASS</span><br/>THAT NEVER DULLS</h1>
+    <p class="hero-sub">9H ceramic coating · hydrophobic · UV-stable</p>
+  </div>
+</section>
+
+<div class="hint">Drag to orbit</div>
+<div class="controls">
+  <button id="replay">Replay Coating</button>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+scene.background = null;
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(35, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.set(4.5, 2.0, 5.5);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minPolarAngle = Math.PI * 0.25;
+controls.maxPolarAngle = Math.PI * 0.5;
+controls.minDistance = 4.5;
+controls.maxDistance = 9;
+controls.enablePan = false;
+
+// Lights (env does most of it, but a red rim for brand)
+const key = new THREE.DirectionalLight(0xffffff, 1.2);
+key.position.set(5, 5, 5);
+scene.add(key);
+const rim = new THREE.PointLight(0x8b0000, 8, 15, 2);
+rim.position.set(-3, 2, -3);
+scene.add(rim);
+
+// Ground (subtle reflective disk)
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(10, 64),
+  new THREE.MeshStandardMaterial({ color: 0x050505, metalness: 0.4, roughness: 0.6 })
+);
+ground.rotation.x = -Math.PI/2;
+ground.position.y = -0.6;
+scene.add(ground);
+
+// --- Build a stylised low-poly car from primitives ---
+const car = new THREE.Group();
+
+const bodyMat = new THREE.MeshPhysicalMaterial({
+  color: 0x141414,
+  metalness: 0.9,
+  roughness: 0.55,     // starts dull
+  clearcoat: 0.0,      // animates to 1
+  clearcoatRoughness: 0.2,
+  reflectivity: 0.5,
+});
+
+function body(w, h, d, y, color) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bodyMat);
+  m.position.y = y;
+  car.add(m);
+  return m;
+}
+
+// Main chassis
+const chassis = body(3.6, 0.55, 1.5, 0.0);
+// Hood (front) — taper via slight scale
+const hood = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.35, 1.4), bodyMat);
+hood.position.set(1.1, 0.15, 0);
+car.add(hood);
+// Rear
+const rear = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.40, 1.4), bodyMat);
+rear.position.set(-1.1, 0.18, 0);
+car.add(rear);
+// Cabin
+const cabinGeo = new THREE.BoxGeometry(1.7, 0.55, 1.35);
+const cabinMat = new THREE.MeshPhysicalMaterial({ color: 0x0a0a0a, metalness: 0.2, roughness: 0.05, transmission: 0.6, thickness: 0.5, ior: 1.4 });
+const cabin = new THREE.Mesh(cabinGeo, cabinMat);
+cabin.position.set(-0.05, 0.55, 0);
+car.add(cabin);
+// Roof taper (smaller box on top)
+const roof = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.08, 1.2), bodyMat);
+roof.position.set(-0.05, 0.86, 0);
+car.add(roof);
+
+// Wheels
+const tireMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.9, metalness: 0.1 });
+const rimMat = new THREE.MeshPhysicalMaterial({ color: 0xcccccc, metalness: 1.0, roughness: 0.15 });
+function wheel(x, z) {
+  const g = new THREE.Group();
+  const tire = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.28, 24), tireMat);
+  tire.rotation.z = Math.PI/2;
+  g.add(tire);
+  const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.30, 10), rimMat);
+  rim.rotation.z = Math.PI/2;
+  g.add(rim);
+  g.position.set(x, -0.35, z);
+  car.add(g);
+  return g;
+}
+wheel(1.2, 0.72);
+wheel(1.2, -0.72);
+wheel(-1.2, 0.72);
+wheel(-1.2, -0.72);
+
+// Headlights
+const hlMat = new THREE.MeshStandardMaterial({ color: 0xfff4d6, emissive: 0xfff1c2, emissiveIntensity: 1.2 });
+[[-0.4, 0.6],[0.4, 0.6]].forEach(([dx,dz])=>{
+  const hl = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.12, 0.08), hlMat);
+  hl.position.set(1.85, 0.15, dz - 0.3);
+  car.add(hl);
+});
+// Tail lights (red)
+const tlMat = new THREE.MeshStandardMaterial({ color: 0x8b0000, emissive: 0x8b0000, emissiveIntensity: 1.6 });
+[[-0.4],[0.4]].forEach(([dz])=>{
+  const tl = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.10, 0.06), tlMat);
+  tl.position.set(-1.85, 0.25, dz);
+  car.add(tl);
+});
+
+scene.add(car);
+
+// --- Mist sweep (a thin glowing plane that travels across the car) ---
+const mistMat = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  transparent: true,
+  opacity: 0.0,
+  side: THREE.DoubleSide,
+  blending: THREE.AdditiveBlending,
+});
+const mist = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 3.0), mistMat);
+mist.rotation.y = Math.PI/2;
+mist.position.set(2.5, 0.4, 0);
+scene.add(mist);
+
+// --- Water bead sprites ---
+const beadGroup = new THREE.Group();
+scene.add(beadGroup);
+function makeBead() {
+  const g = new THREE.SphereGeometry(0.035 + Math.random()*0.03, 8, 8);
+  const m = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    roughness: 0.05,
+    transmission: 0.9,
+    thickness: 0.1,
+    ior: 1.33,
+    opacity: 0.95,
+    transparent: true,
+  });
+  const b = new THREE.Mesh(g, m);
+  b.userData.vy = 0.002 + Math.random()*0.004;
+  b.userData.life = 0;
+  // random point on chassis top
+  b.position.set(-1.6 + Math.random()*3.2, 0.55, -0.65 + Math.random()*1.3);
+  return b;
+}
+
+// --- Reveal animation state ---
+let revealT = 0;      // 0..1 over ~3s
+let revealing = true;
+function startReveal() {
+  revealT = 0; revealing = true;
+  // clear beads
+  while (beadGroup.children.length) {
+    const c = beadGroup.children.pop();
+    c.geometry.dispose(); c.material.dispose();
+  }
+}
+
+document.getElementById('replay').addEventListener('click', startReveal);
+
+// Resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Animate
+const clock = new THREE.Clock();
+function animate() {
+  const dt = clock.getDelta();
+  const t = clock.elapsedTime;
+
+  // Car slow turntable
+  car.rotation.y += dt * 0.15;
+
+  // Reveal progress
+  if (revealing) {
+    revealT += dt / 3.0;
+    if (revealT >= 1) { revealT = 1; revealing = false; }
+    // Mist sweeps from +x to -x
+    const mx = THREE.MathUtils.lerp(2.5, -2.5, revealT);
+    mist.position.x = mx;
+    mist.material.opacity = Math.sin(revealT * Math.PI) * 0.55;
+
+    // Animate clearcoat + roughness
+    bodyMat.clearcoat = THREE.MathUtils.smoothstep(revealT, 0.0, 1.0);
+    bodyMat.roughness = THREE.MathUtils.lerp(0.55, 0.08, revealT);
+    bodyMat.needsUpdate = true;
+  } else {
+    // Drift a couple of beads in per frame
+    if (Math.random() < 0.4 && beadGroup.children.length < 60) {
+      beadGroup.add(makeBead());
+    }
+    for (let i = beadGroup.children.length-1; i>=0; i--){
+      const b = beadGroup.children[i];
+      b.userData.life += dt;
+      // beads roll along +x with slight drift, fall off the edge
+      b.position.x += (0.2 + Math.random()*0.1) * dt;
+      b.position.y -= b.userData.vy;
+      if (b.position.x > 2.2 || b.userData.life > 2.8) {
+        beadGroup.remove(b);
+        b.geometry.dispose(); b.material.dispose();
+      }
+    }
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
+startReveal();
+animate();
+</script>
+</body>
+</html>
