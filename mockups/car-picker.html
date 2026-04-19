@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nuvor — Pick Your Car</title>
+<style>
+  :root { --red:#8b0000; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { min-height:100%; background:#080808; color:#fff; font-family:'Outfit',system-ui,sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:40px 20px 60px; }
+  h1 { font-family:'Orbitron',sans-serif; font-weight:800; font-size:clamp(1.4rem,3vw,2.2rem); }
+  h1 .r { color:var(--red); }
+  p.lede { margin-top:8px; opacity:0.6; font-size:0.9rem; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-top:28px; }
+  .card { background:#111; border:2px solid transparent; border-radius:10px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,transform 0.15s; }
+  .card:hover { border-color:rgba(255,255,255,0.3); transform:translateY(-2px); }
+  .card.selected { border-color:var(--red); }
+  .thumb { height:160px; background:#000; overflow:hidden; position:relative; }
+  .thumb img { width:100%; height:100%; object-fit:cover; filter:brightness(0.6) saturate(0.7); transition:filter 0.3s; display:block; }
+  .card:hover .thumb img, .card.selected .thumb img { filter:brightness(0.85) saturate(1.3); }
+  .thumb .status { position:absolute; top:6px; right:6px; font-size:9px; letter-spacing:0.15em; padding:2px 7px; border-radius:999px; text-transform:uppercase; }
+  .status.ok  { background:rgba(0,180,80,0.7); }
+  .status.err { background:rgba(180,0,0,0.7); }
+  .name { padding:10px 12px; font-size:0.88rem; letter-spacing:0.05em; }
+  .actions { margin-top:28px; display:flex; gap:10px; align-items:center; }
+  .btn-apply { padding:12px 28px; background:var(--red); color:#fff; border:none; border-radius:4px; font:inherit; font-size:0.88rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; }
+  .btn-apply:disabled { opacity:0.35; cursor:not-allowed; }
+  .selected-name { opacity:0.6; font-size:0.85rem; }
+  a.back { display:inline-block; margin-bottom:20px; color:#fff; text-decoration:none; font-size:11px; padding:5px 10px; border:1px solid rgba(255,255,255,0.2); border-radius:999px; background:rgba(0,0,0,0.5); }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400&display=swap" rel="stylesheet" />
+</head>
+<body>
+<main>
+  <a class="back" href="./index.html">← All mockups</a>
+  <h1>Pick a <span class="r">Car</span></h1>
+  <p class="lede">Click a car to preview it with the paint-sweep effect. Images that fail to load are marked red.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="actions">
+    <button class="btn-apply" id="btn" disabled>Preview with Paint Sweep →</button>
+    <span class="selected-name" id="sel-name">No car selected</span>
+  </div>
+</main>
+
+<script>
+const cars = [
+  { name:'Lamborghini Huracán',  url:'https://upload.wikimedia.org/wikipedia/commons/8/87/Lamborghini_Huracan_LP_610-4.jpg' },
+  { name:'Ferrari SF90 Stradale',url:'https://upload.wikimedia.org/wikipedia/commons/0/05/Ferrari_SF90_Stradale_-_Flickr_-_Alexandre_Pr%C3%A9vot.jpg' },
+  { name:'McLaren 720S',         url:'https://upload.wikimedia.org/wikipedia/commons/1/19/McLaren_720S_-_Flickr_-_Alexandre_Pr%C3%A9vot_%282%29.jpg' },
+  { name:'Mercedes AMG GT Black',url:'https://upload.wikimedia.org/wikipedia/commons/6/64/Mercedes-Benz_AMG_GT_Black_Series.jpg' },
+  { name:'Porsche 911 GT3 RS',   url:'https://upload.wikimedia.org/wikipedia/commons/4/40/Porsche_911_GT3_RS_%28992%29_-_Flickr_-_Alexandre_Pr%C3%A9vot.jpg' },
+  { name:'Bugatti Tourbillon',   url:'https://upload.wikimedia.org/wikipedia/commons/9/90/Bugatti_Tourbillon_%282024%29_-_front_34_black.jpg' },
+  { name:'Lamborghini Urus',     url:'https://upload.wikimedia.org/wikipedia/commons/d/d8/Lamborghini_Urus_facelift.jpg' },
+  { name:'McLaren 765LT Spider', url:'https://upload.wikimedia.org/wikipedia/commons/f/ff/McLaren_765LT_Spider.jpg' },
+  { name:'Ferrari Portofino',    url:'https://upload.wikimedia.org/wikipedia/commons/4/43/Ferrari_Portofino_-_Flickr_-_Alexandre_Pr%C3%A9vot_%282%29.jpg' },
+  { name:'Aston Martin DBS',     url:'https://upload.wikimedia.org/wikipedia/commons/2/2d/Aston_Martin_DBS_Superleggera.jpg' },
+  { name:'Porsche 911 Turbo S',  url:'https://upload.wikimedia.org/wikipedia/commons/3/36/Porsche_911_Turbo_S_%28992%29_-_Flickr_-_Alexandre_Pr%C3%A9vot.jpg' },
+  { name:'Lamborghini Aventador',url:'https://upload.wikimedia.org/wikipedia/commons/2/2f/Lamborghini_Aventador_LP_700-4_Roadster.jpg' },
+  { name:'Bugatti Chiron (current)', url:'https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg' },
+];
+
+const grid = document.getElementById('grid');
+const btn  = document.getElementById('btn');
+const selName = document.getElementById('sel-name');
+let selected = null;
+
+cars.forEach((car, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="thumb">
+      <img src="${car.url}" alt="${car.name}" crossorigin="anonymous" />
+      <span class="status" id="st${i}">…</span>
+    </div>
+    <div class="name">${car.name}</div>`;
+  const img = card.querySelector('img');
+  const st  = card.querySelector('.status');
+  img.onload  = () => { st.textContent = 'OK';   st.className = 'status ok'; };
+  img.onerror = () => { st.textContent = 'N/A';  st.className = 'status err'; card.style.opacity='0.4'; };
+  card.addEventListener('click', () => {
+    if (st.className.includes('err')) return;
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selected = car;
+    selName.textContent = car.name;
+    btn.disabled = false;
+  });
+  grid.appendChild(card);
+});
+
+btn.addEventListener('click', () => {
+  if (!selected) return;
+  const url = `./option-d-paint-sweep.html?car=${encodeURIComponent(selected.url)}&name=${encodeURIComponent(selected.name)}`;
+  window.location.href = url;
+});
+</script>
+</body>
+</html>

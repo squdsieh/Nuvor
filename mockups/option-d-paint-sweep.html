@@ -114,7 +114,7 @@
 <a class="back" href="./index.html">← All mockups</a>
 
 <section class="hero" id="hero">
-  <img class="car-base"
+  <img class="car-base" id="car-base"
     src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
     alt="" draggable="false" />
   <img class="car-coated" id="car-coated"
@@ -333,6 +333,20 @@
     }
     requestAnimationFrame(intro);
   }, 600);
+})();
+
+// Swap car image from ?car= query param
+(() => {
+  const p = new URLSearchParams(location.search);
+  const carUrl  = p.get('car');
+  const carName = p.get('name');
+  if (carUrl) {
+    document.getElementById('car-base').src   = carUrl;
+    document.getElementById('car-coated').src = carUrl;
+  }
+  if (carName) {
+    document.querySelector('.badge').textContent = 'Paint Sweep · ' + carName;
+  }
 })();
 </script>
 </body>
