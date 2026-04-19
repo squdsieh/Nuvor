@@ -14,13 +14,13 @@
   /* Uncoated — dim, desaturated (bottom layer, always full width) */
   .car-base {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: 0;
+    object-fit: cover; object-position: center 30%; z-index: 0;
     filter: brightness(0.40) saturate(0.45) contrast(1.02);
   }
   /* Coated — vivid, glossy (clipped to left of handle) */
   .car-coated {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: 1;
+    object-fit: cover; object-position: center 30%; z-index: 1;
     filter: brightness(0.80) saturate(1.5) contrast(1.14);
     clip-path: inset(0 50% 0 0);
     will-change: clip-path;
@@ -115,10 +115,10 @@
 
 <section class="hero" id="hero">
   <img class="car-base" id="car-base"
-    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    src="../assets/car-hero.jpeg"
     alt="" draggable="false" />
   <img class="car-coated" id="car-coated"
-    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    src="../assets/car-hero.jpeg"
     alt="" draggable="false" />
 
   <canvas id="c"></canvas>
