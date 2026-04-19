@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nuvor Mockup D — Paint Sweep</title>
+<style>
+  :root { --red:#8b0000; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; color: #fff; font-family: 'Outfit', system-ui, sans-serif; overflow: hidden; }
+
+  .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+
+  /* Uncoated — dim, desaturated (always full width underneath) */
+  .car-uncoated {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 0;
+    filter: brightness(0.42) saturate(0.5) contrast(1.02);
+  }
+  /* Coated — vivid, glossy (clipped to reveal left of sweep line) */
+  .car-coated {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 1;
+    filter: brightness(0.78) saturate(1.45) contrast(1.12);
+    clip-path: inset(0 100% 0 0); /* starts fully hidden */
+    will-change: clip-path;
+  }
+
+  /* Canvas: sweep line + beads */
+  #c { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+  .hero-ov {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.45) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.75) 100%);
+  }
+
+  .hero-c { position: relative; z-index: 4; text-align: center; padding: 0 20px; margin-top: -8vh; }
+  .hero-tag { font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.9; margin-bottom: 1.1rem; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 4.8vw, 4.4rem); line-height: 1.06; text-shadow: 0 2px 32px rgba(0,0,0,0.95); }
+  .hero-title .r { color: var(--red); }
+  .hero-sub { margin-top: 0.9rem; opacity: 0.9; font-size: clamp(0.9rem, 1.2vw, 1.05rem); letter-spacing: 0.05em; }
+  .hero-btns { margin-top: 2rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .bp { padding: 12px 28px; background: var(--red); color: #fff; text-decoration: none; border-radius: 4px; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .bs { padding: 12px 28px; border: 1px solid rgba(255,255,255,0.35); color: #fff; text-decoration: none; border-radius: 4px; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* Phase indicator */
+  .phase-pill {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 10; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    padding: 5px 14px; border: 1px solid rgba(255,255,255,0.15); border-radius: 999px;
+    background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); opacity: 0.7;
+    transition: opacity 0.4s;
+  }
+
+  .badge { position: fixed; top: 16px; left: 16px; z-index: 10; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); }
+  a.back { position: fixed; top: 16px; right: 16px; z-index: 10; color: #fff; text-decoration: none; font-size: 11px; padding: 5px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.5); }
+
+  /* Gloss pulse overlay after full coat */
+  .gloss-pulse {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.0) 40%, rgba(255,255,255,0.18) 55%, rgba(255,255,255,0.0) 70%, transparent 100%);
+    opacity: 0; transition: opacity 0.6s ease;
+    background-size: 200% 100%;
+  }
+  .gloss-pulse.active { animation: sheenSlide 1.8s ease forwards; }
+  @keyframes sheenSlide {
+    0%   { opacity: 0; background-position: -100% 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { opacity: 0; background-position: 200% 0; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="badge">Mockup D · Paint Sweep</div>
+<a class="back" href="./index.html">← All mockups</a>
+
+<section class="hero">
+  <!-- uncoated: dim + desaturated -->
+  <img class="car-uncoated"
+    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    alt="" crossorigin="anonymous" />
+  <!-- coated: vivid + glossy, clips from left -->
+  <img class="car-coated" id="car-coated"
+    src="https://upload.wikimedia.org/wikipedia/commons/1/15/Chiron_Low.jpg"
+    alt="" crossorigin="anonymous" />
+
+  <canvas id="c"></canvas>
+  <div class="gloss-pulse" id="gloss-pulse"></div>
+  <div class="hero-ov"></div>
+
+  <div class="hero-c">
+    <p class="hero-tag">Abu Dhabi · United Arab Emirates</p>
+    <h1 class="hero-title">ARCHITECTS OF <span class="r">DETAILS</span><br/>THAT DEFINE THE DIFFERENCE</h1>
+    <p class="hero-sub">Premium protection solutions — automotive, fleet &amp; marine</p>
+    <div class="hero-btns">
+      <a href="#" class="bp">Get a Quote</a>
+      <a href="#" class="bs">Explore Services →</a>
+    </div>
+  </div>
+</section>
+
+<div class="phase-pill" id="phase-pill">Loading</div>
+
+<script>
+(() => {
+  const canvas  = document.getElementById('c');
+  const ctx     = canvas.getContext('2d');
+  const coated  = document.getElementById('car-coated');
+  const pill    = document.getElementById('phase-pill');
+  const gloss   = document.getElementById('gloss-pulse');
+
+  let W = 0, H = 0;
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width  = W; canvas.height = H;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+  window.addEventListener('resize', () => { resize(); });
+  resize();
+
+  // ── Easing ─────────────────────────────────────────────────────────────────
+  const easeInOut = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+  const easeOut3  = t => 1 - Math.pow(1-t, 3);
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let phase  = 'idle';   // idle → sweep → sheen → bead → pause → restart
+  let sweepT = 0;        // 0..1 sweep progress
+  let t0     = 0;
+  const SWEEP_DUR  = 3200;  // ms
+  const SHEEN_DUR  = 1400;
+  const BEAD_DUR   = 5000;
+  const PAUSE_DUR  = 1200;
+
+  // ── Bubbles pushed by squeegee ──────────────────────────────────────────────
+  const bubbles = [];
+  function spawnBubble(x, y) {
+    if (Math.random() > 0.18) return;
+    bubbles.push({
+      x, y: y + (Math.random() - 0.5) * H * 0.35,
+      vx: 0.6 + Math.random() * 1.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: 1.5 + Math.random() * 3.5,
+      a: 0.55 + Math.random() * 0.4,
+      life: 0, max: 400 + Math.random() * 600
+    });
+  }
+
+  // ── Water beads ─────────────────────────────────────────────────────────────
+  const beads = [];
+  function spawnBead() {
+    if (beads.length > 65) return;
+    beads.push({
+      x: W * 0.12 + Math.random() * W * 0.76,
+      y: H * 0.28 + Math.random() * H * 0.38,
+      vy: 0.28 + Math.random() * 0.52,
+      r: 2.2 + Math.random() * 4.5,
+      life: 0
+    });
+  }
+
+  // ── Phase machine ──────────────────────────────────────────────────────────
+  function startSweep() {
+    sweepT = 0; bubbles.length = 0; beads.length = 0;
+    gloss.classList.remove('active');
+    coated.style.clipPath = 'inset(0 100% 0 0)';
+    phase = 'sweep'; t0 = performance.now();
+    pill.textContent = 'PPF Application';
+  }
+
+  // Start after a short delay for loading
+  setTimeout(startSweep, 800);
+
+  // ── Main render loop ────────────────────────────────────────────────────────
+  let last = performance.now();
+  function loop(now) {
+    const dt      = Math.min(40, now - last); last = now;
+    const elapsed = now - t0;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // ── SWEEP phase ─────────────────────────────────────────────────────────
+    if (phase === 'sweep') {
+      sweepT = Math.min(1, easeInOut(elapsed / SWEEP_DUR));
+      const sx = sweepT * W;
+
+      // Reveal coated layer via clip-path
+      coated.style.clipPath = `inset(0 ${(1 - sweepT) * 100}% 0 0)`;
+
+      // ── Squeegee blade ──────────────────────────────────────────────────
+      // Glow halo behind blade
+      const halo = ctx.createLinearGradient(sx - 60, 0, sx + 8, 0);
+      halo.addColorStop(0,   'rgba(255,255,255,0)');
+      halo.addColorStop(0.6, 'rgba(200,220,255,0.06)');
+      halo.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.fillStyle = halo;
+      ctx.fillRect(sx - 60, 0, 68, H);
+
+      // Film tack — thin translucent PPF film edge ahead of blade
+      const filmAhead = ctx.createLinearGradient(sx, 0, sx + 18, 0);
+      filmAhead.addColorStop(0, 'rgba(180,210,255,0.22)');
+      filmAhead.addColorStop(1, 'rgba(180,210,255,0)');
+      ctx.fillStyle = filmAhead;
+      ctx.fillRect(sx, 0, 18, H);
+
+      // Core blade line — bright white edge
+      const blade = ctx.createLinearGradient(sx - 2, 0, sx + 3, 0);
+      blade.addColorStop(0, 'rgba(255,255,255,0.0)');
+      blade.addColorStop(0.3,'rgba(255,255,255,0.7)');
+      blade.addColorStop(0.6,'rgba(230,240,255,1.0)');
+      blade.addColorStop(1,  'rgba(255,255,255,0.0)');
+      ctx.fillStyle = blade;
+      ctx.fillRect(sx - 2, 0, 5, H);
+
+      // Spawn bubbles at blade midpoint
+      spawnBubble(sx, H * 0.5);
+
+      if (sweepT >= 1) {
+        phase = 'sheen'; t0 = now;
+        pill.textContent = 'Ceramic Bonding';
+        gloss.classList.add('active');
+      }
+    }
+
+    // ── SHEEN phase (full coated, waiting for gloss anim) ───────────────────
+    if (phase === 'sheen') {
+      // hold coated at 100%
+      coated.style.clipPath = 'inset(0 0% 0 0)';
+
+      // Subtle ambient specular pulse
+      const t = elapsed / SHEEN_DUR;
+      const specX = W * (0.1 + t * 0.8);
+      const spec = ctx.createLinearGradient(specX - 90, 0, specX + 120, 0);
+      spec.addColorStop(0, 'rgba(255,255,255,0)');
+      spec.addColorStop(0.35,'rgba(255,255,255,0.04)');
+      spec.addColorStop(0.5, 'rgba(255,255,255,0.10)');
+      spec.addColorStop(0.65,'rgba(255,255,255,0.04)');
+      spec.addColorStop(1,  'rgba(255,255,255,0)');
+      ctx.fillStyle = spec;
+      ctx.fillRect(0, H * 0.22, W, H * 0.55);
+
+      if (elapsed > SHEEN_DUR) {
+        phase = 'bead'; t0 = now;
+        pill.textContent = 'Hydrophobic Surface Active';
+      }
+    }
+
+    // ── BEAD phase ──────────────────────────────────────────────────────────
+    if (phase === 'bead') {
+      coated.style.clipPath = 'inset(0 0% 0 0)';
+
+      // Persistent subtle sheen
+      const sheen = ctx.createLinearGradient(0, H * 0.3, W, H * 0.65);
+      sheen.addColorStop(0,   'rgba(255,255,255,0)');
+      sheen.addColorStop(0.38,'rgba(255,255,255,0.045)');
+      sheen.addColorStop(0.62,'rgba(255,255,255,0.09)');
+      sheen.addColorStop(1,   'rgba(255,255,255,0)');
+      ctx.fillStyle = sheen;
+      ctx.fillRect(0, 0, W, H);
+
+      if (Math.random() < 0.5) spawnBead();
+
+      if (elapsed > BEAD_DUR) {
+        phase = 'pause'; t0 = now;
+        pill.textContent = '';
+      }
+    }
+
+    // ── PAUSE phase — fade coated back out, then restart ────────────────────
+    if (phase === 'pause') {
+      if (elapsed > PAUSE_DUR) startSweep();
+    }
+
+    // ── Draw bubbles ─────────────────────────────────────────────────────────
+    for (let i = bubbles.length - 1; i >= 0; i--) {
+      const b = bubbles[i];
+      b.x += b.vx * (dt / 16); b.y += b.vy; b.life += dt;
+      if (b.life > b.max || b.x > W) { bubbles.splice(i, 1); continue; }
+      const fade = Math.max(0, 1 - b.life / b.max);
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(200,225,255,${b.a * fade * 0.8})`;
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+      // inner highlight
+      ctx.beginPath();
+      ctx.arc(b.x - b.r * 0.28, b.y - b.r * 0.28, b.r * 0.32, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${b.a * fade * 0.65})`;
+      ctx.fill();
+    }
+
+    // ── Draw beads ────────────────────────────────────────────────────────────
+    for (let i = beads.length - 1; i >= 0; i--) {
+      const b = beads[i];
+      b.y += b.vy * (dt / 16); b.life += dt;
+      if (b.y > H * 0.8 || b.life > 3200) { beads.splice(i, 1); continue; }
+      const fade = Math.max(0, 1 - b.life / 3200);
+      const grd = ctx.createRadialGradient(b.x - b.r * 0.3, b.y - b.r * 0.35, 0, b.x, b.y, b.r);
+      grd.addColorStop(0,   `rgba(255,255,255,${0.95 * fade})`);
+      grd.addColorStop(0.4, `rgba(210,235,255,${0.7  * fade})`);
+      grd.addColorStop(1,   `rgba(160,205,255,${0.18 * fade})`);
+      ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fillStyle = grd; ctx.fill();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
