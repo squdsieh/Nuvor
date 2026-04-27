@@ -16,9 +16,30 @@
         :root{--red:#8b0000;--red-b:#a01010;--red-g:#c01515;--red-d:#5a0000;--bk:#000;--bk2:#0a0a0a;--bk3:#111;--gd:#1e1e1e;--g:#444;--gm:#777;--gl:#aaa;--w:#fff;--fd:'Orbitron',sans-serif;--fb:'Outfit',sans-serif}
         *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;overflow-x:hidden}body{font-family:var(--fb);background:var(--bk);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased}::selection{background:var(--red);color:var(--w)}
 
-        /* PRELOADER */
-        .preloader{position:fixed;inset:0;z-index:10000;background:var(--bk);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .8s,visibility .8s}.preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-        .pl-logo img{height:120px;width:auto}.pl-bar{width:200px;height:2px;background:var(--gd);margin-top:2rem;position:relative;overflow:hidden}.pl-bar::after{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:var(--red);animation:pls 1s ease-in-out infinite}@keyframes pls{0%{left:-100%}100%{left:100%}}
+        /* PRELOADER — Animated NUVOR mark */
+        .preloader{position:fixed;inset:0;z-index:10000;background:radial-gradient(ellipse at center,#180005 0%,#000 65%);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 1s ease,visibility 1s ease}
+        .preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .preloader::before,.preloader::after{content:'';position:absolute;background:var(--red);opacity:.08;pointer-events:none}
+        .preloader::before{top:-50%;right:-5%;width:2px;height:200%;transform:rotate(-35deg)}
+        .preloader::after{top:-50%;left:-5%;width:1px;height:200%;transform:rotate(35deg)}
+        .pl-inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:1.4rem;z-index:1}
+        .pl-icon-wrap{position:relative;width:130px;height:105px;animation:pl-breathe 2.6s ease-in-out infinite}
+        .pl-icon-wrap::before{content:'';position:absolute;inset:-50%;background:radial-gradient(ellipse at center,rgba(192,16,16,.45) 0%,rgba(139,0,0,.15) 30%,transparent 65%);z-index:-1;animation:pl-glow 2.2s ease-in-out infinite}
+        .pl-icon{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 24px rgba(192,16,16,.6));animation:pl-icon-in 1.3s cubic-bezier(.2,.7,.3,1) backwards}
+        .pl-shimmer{position:absolute;top:-5%;bottom:-5%;left:-25%;width:35%;background:linear-gradient(110deg,transparent 0%,rgba(255,80,80,.18) 35%,rgba(255,255,255,.55) 50%,rgba(255,80,80,.18) 65%,transparent 100%);mix-blend-mode:screen;pointer-events:none;filter:blur(2px);animation:pl-shimmer 3.2s cubic-bezier(.55,.05,.45,1) 1.1s infinite;opacity:0}
+        @keyframes pl-icon-in{from{opacity:0;transform:scale(.55) rotate(-8deg);filter:drop-shadow(0 0 0 transparent) blur(18px)}to{opacity:1;transform:scale(1) rotate(0);filter:drop-shadow(0 0 24px rgba(192,16,16,.6)) blur(0)}}
+        @keyframes pl-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+        @keyframes pl-glow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+        @keyframes pl-shimmer{0%{left:-25%;opacity:0}10%,90%{opacity:1}100%{left:115%;opacity:0}}
+        .pl-text{font-family:var(--fd);font-size:1.05rem;font-weight:800;letter-spacing:.55rem;display:flex;margin-top:.4rem;opacity:0;animation:pl-text-in .9s cubic-bezier(.2,.7,.3,1) .55s forwards}
+        .pl-text span{display:inline-block;color:var(--w)}
+        .pl-text span:nth-child(1),.pl-text span:nth-child(3){color:var(--red)}
+        @keyframes pl-text-in{from{opacity:0;letter-spacing:1.4rem;filter:blur(8px)}to{opacity:1;letter-spacing:.55rem;filter:blur(0)}}
+        .pl-tag{font-family:var(--fd);font-size:.5rem;font-weight:500;letter-spacing:.42rem;text-transform:uppercase;color:var(--gm);opacity:0;animation:pl-fade-up .7s ease-out 1s forwards}
+        @keyframes pl-fade-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .pl-progress{position:relative;width:240px;height:1px;background:rgba(255,255,255,.08);margin-top:1.2rem;overflow:hidden}
+        .pl-progress-fill{position:absolute;top:0;left:0;height:100%;width:0%;background:linear-gradient(90deg,transparent,var(--red) 40%,#ff4848);box-shadow:0 0 10px var(--red),0 0 20px rgba(192,16,16,.5);will-change:width;transition:width .3s linear}
+        .pl-pct{font-family:var(--fd);font-size:.48rem;letter-spacing:.32rem;color:var(--gm);font-weight:500}
 
         /* CURSOR */
         .cursor{width:18px;height:18px;border:1.5px solid var(--red);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .15s,opacity .15s;mix-blend-mode:difference}.cursor.active{transform:scale(2.5);opacity:.5}@media(max-width:1024px){.cursor{display:none}}
@@ -33,15 +54,15 @@
         .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}.hamburger span{width:26px;height:1.5px;background:var(--red);transition:all .3s}.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,4.5px)}.hamburger.active span:nth-child(2){opacity:0}.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-4.5px)}
         .mobile-menu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2rem}.mobile-menu.active{display:flex}.mobile-menu a{color:var(--w);text-decoration:none;font-family:var(--fd);font-size:1.2rem;font-weight:500;letter-spacing:.3rem;transition:color .3s}.mobile-menu a:hover{color:var(--red)}
 
-        /* HERO */
-        .hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-        #hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-        .hero.has-3d .hero-img{display:none}
-        .hero.has-3d .hero-ov{background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.05) 40%,rgba(0,0,0,.05) 60%,rgba(0,0,0,.5) 100%)}
-        .hero-img{position:absolute;inset:0;background:url('assets/web/hero.jpg') center center/cover no-repeat;filter:brightness(.35)}
-        .hero-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.8) 100%);z-index:0}
-        .hero-d{position:absolute;inset:0;overflow:hidden;opacity:.15}.hero-d::before{content:'';position:absolute;top:-50%;right:-10%;width:2px;height:200%;background:var(--red);transform:rotate(-35deg)}.hero-d::after{content:'';position:absolute;top:-50%;right:5%;width:1px;height:200%;background:var(--red);transform:rotate(-35deg)}
-        .hero-c{text-align:center;z-index:2;padding:0 2rem}
+        /* HERO — PPF Wipe Reveal */
+        .hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#000}
+        .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(.85) contrast(1.06) saturate(1.05)}
+        .wipe-mask{position:absolute;inset:0;background:#000;z-index:1;will-change:clip-path;clip-path:inset(0 0 0 0)}
+        .wipe-line{position:absolute;top:0;bottom:0;left:0;width:3px;background:linear-gradient(180deg,transparent 0%,#ff2828 12%,#ff5555 50%,#ff2828 88%,transparent 100%);box-shadow:0 0 24px #c01010,0 0 60px rgba(192,16,16,.55),0 0 100px rgba(139,0,0,.35);z-index:2;will-change:left,opacity;opacity:0;pointer-events:none;mix-blend-mode:screen}
+        .wipe-glow{position:absolute;top:0;bottom:0;left:0;width:60px;background:linear-gradient(90deg,transparent 0%,rgba(255,40,40,.18) 60%,rgba(255,80,80,.4) 95%,rgba(255,255,255,.7) 100%);z-index:2;will-change:left,opacity;opacity:0;pointer-events:none;mix-blend-mode:screen;transform:translateX(-58px)}
+        .hero-veil{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.1) 30%,rgba(0,0,0,.1) 65%,rgba(0,0,0,.75) 100%);pointer-events:none}
+        .hero-d{position:absolute;inset:0;overflow:hidden;opacity:.15;z-index:4;pointer-events:none}.hero-d::before{content:'';position:absolute;top:-50%;right:-10%;width:2px;height:200%;background:var(--red);transform:rotate(-35deg)}.hero-d::after{content:'';position:absolute;top:-50%;right:5%;width:1px;height:200%;background:var(--red);transform:rotate(-35deg)}
+        .hero-c{text-align:center;z-index:5;position:relative;padding:0 2rem}
         .hero-tag{font-family:var(--fd);font-size:.6rem;font-weight:500;letter-spacing:.5rem;text-transform:uppercase;color:var(--red);margin-bottom:2rem;opacity:0;animation:fu 1s ease .5s forwards}
         .hero-title{font-family:var(--fd);font-size:clamp(1.8rem,5vw,4.5rem);font-weight:800;line-height:1.15;letter-spacing:.05em;color:var(--w);margin-bottom:1.5rem;opacity:0;animation:fu 1s ease .7s forwards;text-shadow:0 4px 40px rgba(0,0,0,.5)}.r{color:var(--red)}
         .hero-sub{font-family:var(--fd);font-size:.65rem;font-weight:400;letter-spacing:.35rem;text-transform:uppercase;color:var(--gl);max-width:650px;margin:0 auto 1.5rem;line-height:2;opacity:0;animation:fu 1s ease .9s forwards}
@@ -49,13 +70,15 @@
         .hero-btns{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fu 1s ease 1.1s forwards}
         .bp{background:var(--red);color:var(--w);padding:.9rem 2.2rem;font-family:var(--fd);font-size:.6rem;font-weight:600;letter-spacing:.2rem;text-transform:uppercase;border:1px solid var(--red);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;transition:all .4s}.bp:hover{background:var(--red-b);box-shadow:0 8px 40px rgba(139,0,0,.3);transform:translateY(-2px)}
         .bs{background:transparent;color:var(--w);padding:.9rem 2.2rem;font-family:var(--fd);font-size:.6rem;font-weight:500;letter-spacing:.2rem;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;transition:all .4s}.bs:hover{border-color:var(--red);color:var(--red)}
-        .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.75rem;opacity:0;animation:fu 1s ease 1.5s forwards;z-index:2}.hero-scroll span{font-family:var(--fd);font-size:.5rem;letter-spacing:.3rem;text-transform:uppercase;color:var(--g)}.sl{width:1px;height:35px;background:var(--gd);position:relative;overflow:hidden}.sl::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:50%;background:var(--red);animation:sd 2s ease-in-out infinite}@keyframes sd{0%{top:-50%}100%{top:100%}}@keyframes fu{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.75rem;opacity:0;animation:fu 1s ease 1.5s forwards;z-index:5}.hero-scroll span{font-family:var(--fd);font-size:.5rem;letter-spacing:.3rem;text-transform:uppercase;color:var(--g)}.sl{width:1px;height:35px;background:var(--gd);position:relative;overflow:hidden}.sl::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:50%;background:var(--red);animation:sd 2s ease-in-out infinite}@keyframes sd{0%{top:-50%}100%{top:100%}}@keyframes fu{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
         /* MARQUEE */
         .mq{padding:1.5rem 0;border-top:1px solid rgba(139,0,0,.15);border-bottom:1px solid rgba(139,0,0,.15);overflow:hidden;background:var(--bk2)}.mq-t{display:flex;animation:mqa 35s linear infinite;width:max-content}.mq-t span{font-family:var(--fd);font-size:.65rem;font-weight:500;letter-spacing:.3rem;text-transform:uppercase;color:var(--g);white-space:nowrap;padding:0 2rem}.mq-t .dot{display:inline-block;width:4px;height:4px;background:var(--red);margin-left:2rem;vertical-align:middle}@keyframes mqa{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
         /* ABOUT */
-        .about{padding:7rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;max-width:1400px;margin:0 auto;align-items:center}
+        .about{padding:7rem 4rem;max-width:1000px;margin:0 auto;text-align:center}
+        .about .ast{justify-content:center}
+        .about .sl2{justify-content:center}
         .sl2{font-family:var(--fd);font-size:.55rem;font-weight:600;letter-spacing:.4rem;text-transform:uppercase;color:var(--red);margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}.sl2::before{content:'';width:30px;height:2px;background:var(--red)}
         .at{font-family:var(--fd);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;line-height:1.3;margin-bottom:1.5rem;letter-spacing:.03em}
         .atx{font-size:.85rem;font-weight:300;line-height:1.9;color:var(--gl);margin-bottom:1.5rem}
@@ -102,10 +125,12 @@
 
         /* WHY NUVOR */
         .why{padding:7rem 4rem;max-width:1200px;margin:0 auto}.wg{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem}
-        .wi{text-align:center;padding:2rem 1.2rem;border:1px solid rgba(139,0,0,.08);background:var(--bk3);transition:all .5s;position:relative}.wi::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--red);transition:width .4s}.wi:hover::after{width:50px}.wi:hover{transform:translateY(-4px);border-color:rgba(139,0,0,.2)}
-        .wi-ico{width:48px;height:48px;border:1px solid rgba(139,0,0,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
-        .wi-ico svg{width:22px;height:22px;stroke:var(--red);fill:none;stroke-width:1.5}
-        .wi h4{font-family:var(--fd);font-size:.65rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;margin-bottom:.6rem;color:var(--w)}.wi p{font-size:.75rem;font-weight:300;line-height:1.7;color:var(--gl)}
+        .wi{text-align:center;padding:0;border:1px solid rgba(139,0,0,.08);background:var(--bk3);transition:all .5s;position:relative;overflow:hidden}.wi::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--red);transition:width .4s;z-index:2}.wi:hover::after{width:50px}.wi:hover{transform:translateY(-4px);border-color:rgba(139,0,0,.25);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+        .wi-img{width:100%;height:170px;overflow:hidden;position:relative;margin-bottom:1.4rem}
+        .wi-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.65) contrast(1.05);transition:transform .6s,filter .6s}
+        .wi-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.7) 100%);pointer-events:none}
+        .wi:hover .wi-img img{filter:brightness(.85);transform:scale(1.06)}
+        .wi h4{font-family:var(--fd);font-size:.65rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;margin-bottom:.6rem;color:var(--w);padding:0 1.2rem}.wi p{font-size:.75rem;font-weight:300;line-height:1.7;color:var(--gl);padding:0 1.2rem 1.6rem}
 
         /* PROCESS */
         .prc{padding:5rem 4rem;background:var(--bk2)}.prcs{max-width:1200px;margin:3rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}.prcs::before{content:'';position:absolute;top:2rem;left:12.5%;width:75%;height:1px;background:rgba(139,0,0,.2)}
@@ -114,10 +139,16 @@
 
         /* SECTORS */
         .sec{padding:7rem 4rem;max-width:1400px;margin:0 auto}.secg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
-        .secc{padding:2.5rem;border:1px solid rgba(139,0,0,.08);background:var(--bk3);transition:all .5s;position:relative;overflow:hidden}.secc::before{content:'';position:absolute;top:0;left:0;right:0;height:0;background:linear-gradient(180deg,rgba(139,0,0,.06),transparent);transition:height .5s}.secc:hover::before{height:100%}.secc:hover{border-color:rgba(139,0,0,.25);transform:translateY(-4px)}
-        .sec-ico{width:48px;height:48px;border:1px solid rgba(139,0,0,.2);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
-        .sec-ico svg{width:22px;height:22px;stroke:var(--red);fill:none;stroke-width:1.5}
-        .secc h3{font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--w);margin-bottom:.8rem}.secc p{font-size:.78rem;font-weight:300;line-height:1.8;color:var(--gl)}
+        .secc{padding:0;border:1px solid rgba(139,0,0,.08);background:var(--bk3);transition:all .5s;position:relative;overflow:hidden}
+        .secc::before{content:'';position:absolute;top:0;left:0;right:0;height:0;background:linear-gradient(180deg,rgba(139,0,0,.08),transparent);transition:height .5s;z-index:1;pointer-events:none}
+        .secc:hover::before{height:100%}
+        .secc:hover{border-color:rgba(139,0,0,.3);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+        .sec-img{width:100%;height:200px;overflow:hidden;position:relative}
+        .sec-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.7) contrast(1.05);transition:transform .6s,filter .6s}
+        .sec-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.75) 100%);pointer-events:none}
+        .secc:hover .sec-img img{filter:brightness(.92);transform:scale(1.06)}
+        .secc h3{font-family:var(--fd);font-size:.75rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--w);margin:1.6rem 0 .8rem;padding:0 2rem}
+        .secc p{font-size:.78rem;font-weight:300;line-height:1.8;color:var(--gl);padding:0 2rem 2rem}
 
         /* CTA */
         .cta{padding:5rem 4rem;background:linear-gradient(135deg,rgba(139,0,0,.1),var(--bk) 60%);text-align:center;position:relative;overflow:hidden}.cta::before{content:'';position:absolute;inset:0;border-top:1px solid rgba(139,0,0,.15);border-bottom:1px solid rgba(139,0,0,.15)}
@@ -152,6 +183,9 @@
         /* REVEAL */
         .rv{opacity:0;transform:translateY(35px);transition:opacity .7s,transform .7s}.rv.vis{opacity:1;transform:translateY(0)}
 
+        /* SCROLL PROGRESS BAR */
+        .scroll-prog{position:fixed;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--red) 0%,#ff4848 50%,var(--red) 100%);transform-origin:left center;transform:scaleX(0);z-index:9999;pointer-events:none;box-shadow:0 0 14px rgba(192,16,16,.7),0 1px 4px rgba(0,0,0,.4);will-change:transform}
+
         /* RESPONSIVE */
         @media(max-width:1024px){.nav{padding:1.2rem 2rem}.nav.scrolled{padding:.8rem 2rem}.nav-links{display:none}.hamburger{display:flex}.about{grid-template-columns:1fr;gap:2.5rem;padding:5rem 2rem}.av{height:350px}.phg{grid-template-columns:1fr}.wg{grid-template-columns:repeat(2,1fr)}.prcs{grid-template-columns:repeat(2,1fr);gap:1.5rem}.prcs::before{display:none}.secg{grid-template-columns:1fr}.ctg{grid-template-columns:1fr}.ftc{grid-template-columns:1fr 1fr;gap:2rem}}
         @media(max-width:768px){.srv{padding:5rem 1.5rem}.sg{grid-template-columns:1fr}.shwi{min-width:300px;height:400px}.wg{grid-template-columns:1fr}.prcs{grid-template-columns:1fr}.fr{grid-template-columns:1fr}.ast{grid-template-columns:1fr}.ftc{grid-template-columns:1fr}.ftb{flex-direction:column;gap:.8rem;text-align:center}.cta{padding:4rem 2rem}.why{padding:5rem 2rem}.ct{padding:5rem 2rem}.ft{padding:3rem 2rem}.phi{padding:4rem 2rem}.sec{padding:5rem 2rem}.prc{padding:4rem 2rem}.sc-img{height:200px}}
@@ -159,18 +193,33 @@
     </style>
 </head>
 <body>
-    <div class="preloader" id="preloader"><div class="pl-logo"><svg viewBox="0 0 2001 501" style="height:120px;width:auto;display:block" xmlns="http://www.w3.org/2000/svg" aria-label="NUVOR"><text x="1000" y="415" text-anchor="middle" font-family="Orbitron,sans-serif" font-weight="800" font-size="310" letter-spacing="18"><tspan fill="#8b0000">N</tspan><tspan fill="#ffffff">U</tspan><tspan fill="#8b0000">V</tspan><tspan fill="#ffffff">OR</tspan></text></svg></div><div class="pl-bar"></div></div>
+    <div class="preloader" id="preloader">
+        <div class="pl-inner">
+            <div class="pl-icon-wrap">
+                <img class="pl-icon" src="assets/web/logo-Icon.png" alt="NUVOR">
+                <div class="pl-shimmer"></div>
+            </div>
+            <div class="pl-text" aria-label="NUVOR">
+                <span>N</span><span>U</span><span>V</span><span>O</span><span>R</span>
+            </div>
+            <div class="pl-tag">Architects of Details</div>
+            <div class="pl-progress"><div class="pl-progress-fill" id="pl-progress-fill"></div></div>
+            <div class="pl-pct" id="pl-pct">0%</div>
+        </div>
+    </div>
     <div class="cursor" id="cursor"></div>
     <a href="https://wa.me/971582223613?text=Hello%20NUVOR%2C%20I%27d%20like%20to%20inquire%20about%20your%20services." class="waf" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
     <nav class="nav" id="nav"><a href="#" class="nav-logo"><img src="assets/web/Logo-Vertical.png" alt="NUVOR Auto Care" class="nav-logo-img"></a><ul class="nav-links"><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#showcase">Portfolio</a></li><li><a href="#sectors">Sectors</a></li><li><a href="#contact">Contact</a></li><li><a href="https://wa.me/971582223613?text=Hello%20NUVOR%2C%20I%27d%20like%20to%20book%20a%20service." class="nav-cta" target="_blank">Book Now</a></li></ul><div class="hamburger" id="hamburger"><span></span><span></span><span></span></div></nav>
     <div class="mobile-menu" id="mm"><a href="#about" onclick="cm()">About</a><a href="#services" onclick="cm()">Services</a><a href="#showcase" onclick="cm()">Portfolio</a><a href="#sectors" onclick="cm()">Sectors</a><a href="#contact" onclick="cm()">Contact</a><a href="https://wa.me/971582223613" target="_blank" onclick="cm()">Book Now</a></div>
 
-    <!-- HERO with real background image -->
+    <!-- HERO — PPF Wipe Reveal -->
     <section class="hero" id="hero">
-        <canvas id="hero-canvas"></canvas>
-        <div class="hero-img" id="hero-fallback"></div>
-        <div class="hero-ov"></div>
+        <img class="hero-photo" src="assets/services/wrapping/1.jpeg" alt="NUVOR luxury automotive protection" loading="eager">
+        <div class="wipe-mask" id="wipe-mask"></div>
+        <div class="wipe-glow" id="wipe-glow"></div>
+        <div class="wipe-line" id="wipe-line"></div>
+        <div class="hero-veil"></div>
         <div class="hero-d"></div>
         <div class="hero-c">
             <p class="hero-tag">Abu Dhabi · United Arab Emirates</p>
@@ -190,7 +239,6 @@
     <!-- ABOUT with real image -->
     <section class="about" id="about">
         <div class="rv"><div class="sl2">Who We Are</div><h2 class="at">REDEFINING <span class="r">PREMIUM</span> PROTECTION SINCE DAY ONE</h2><p class="atx">NUVOR represents a definitive milestone in advanced protection solutions for the automotive, fleet, and marine sectors. Born from a vision to redefine premium care, we provide specialized visual identity and preservation services for government fleets, private corporations, logistics providers, and luxury yachts across the Gulf.</p><p class="atx">Based in Abu Dhabi, we seamlessly blend artistry with cutting-edge technology to deliver results that consistently exceed the expectations of the world's most discerning clientele.</p><div class="ast"><div class="st"><div class="stn">3</div><div class="stl">Core Sectors</div></div><div class="st"><div class="stn">12+</div><div class="stl">Services</div></div><div class="st"><div class="stn">UAE</div><div class="stl">Based</div></div></div></div>
-        <div class="av rv"><img src="assets/web/about.jpg" alt="NUVOR Auto Care" loading="lazy"><div class="av-ov"></div><div class="av-diag"></div></div>
     </section>
 
     <section class="phi"><div class="phg"><div class="phc rv"><h3>Our Mission</h3><p>To empower our clients to preserve the value and elegance of their assets through innovative protection solutions that surpass international standards. We aim to set new benchmarks for excellence by delivering "smart," bespoke services tailored to the needs of the elite.</p></div><div class="phc rv"><h3>Our Vision</h3><p>To be the most trusted global destination for automotive care, fleet visual identity, and maritime protection. We strive for this through continuous innovation, uncompromising quality, and a meticulous attention to detail that scales across every service we offer.</p></div></div></section>
@@ -200,24 +248,25 @@
         <div class="sh rv"><div class="shl">Our Expertise</div><h2 class="stt">COMPREHENSIVE PROTECTION & BRANDING</h2><p class="sst">From fleet identity to paint perfection — every service is engineered for excellence.</p></div>
         <div class="scb rv"><button class="scbb active" onclick="fs('all',this)">All</button><button class="scbb" onclick="fs('au',this)">Automotive</button><button class="scbb" onclick="fs('fl',this)">Fleet & Marine</button><button class="scbb" onclick="fs('pr',this)">Protection</button><button class="scbb" onclick="fs('de',this)">Design & Detail</button></div>
         <div class="sg" id="sg">
-            <div class="sc rv" data-c="fl"><div class="sc-img"><img src="assets/web/svc-fleet.jpg" alt="Corporate Fleet Branding" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Corporate Fleet Branding</h3><p>Transform vehicles into brand ambassadors. Tailored conversions for corporate, police, fire, ambulance, and military vehicles.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Fleet%20Branding" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="au"><div class="sc-img"><img src="assets/web/svc-wrapping.jpg" alt="Premium Car Wrapping" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Premium Car Wrapping</h3><p>High-performance wrap systems with metallic tones, satin sheens, high-gloss, matte sophistication, and custom textures.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Car%20Wrapping" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="fl"><div class="sc-img"><img src="assets/web/svc-marine.jpg" alt="Marine Graphics" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Marine Graphics</h3><p>The nation's premier authority in luxury marine wraps. Custom-crafted designs for yachts and watercraft.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Marine%20Graphics" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="pr"><div class="sc-img"><img src="assets/web/svc-ppf.jpg" alt="Paint Protection Film" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Paint Protection Film</h3><p>Invisible armour with heat-activated self-healing technology, non-yellowing clarity, and Edge Seal Technology.</p><a href="https://wa.me/971582223613?text=Interested%20in%20PPF" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="pr"><div class="sc-img"><img src="assets/web/svc-tinting.jpg" alt="Solar Window Tinting" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Solar Window Tinting</h3><p>Advanced glass tinting with lifelong colour stability, shatter-resistant safety, and UV damage prevention.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Window%20Tinting" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="pr"><div class="sc-img"><img src="assets/web/svc-ceramic.jpg" alt="Nano Ceramic Coating" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Nano Ceramic Coating</h3><p>Molecular-level bonding delivers unmatched brilliance, ultra-smooth hydrophobic surface, and long-lasting defence.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Ceramic%20Coating" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="de"><div class="sc-img"><img src="assets/web/svc-sport.jpg" alt="Bespoke Sport Designs" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Bespoke Sport Designs</h3><p>Engineering distinctive visual identities that blend aerodynamic precision with bold, dominating presence.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Sport%20Designs" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="au"><div class="sc-img"><img src="assets/web/svc-rims.jpg" alt="Rims Protection & Paint" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Rims Protection & Paint</h3><p>Premium rim protection combining style with defence against scuffs. Precision colour refinishing for rims and callipers.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Rims%20Protection" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="de"><div class="sc-img"><img src="assets/web/svc-detailing.jpg" alt="Auto Detailing" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Auto Detailing</h3><p>Full-spectrum cleanse. Expert polishing removes fine scratches, embedded dirt, and oxidation for flawless glory.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Detailing" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="au"><div class="sc-img"><img src="assets/web/svc-pdr.jpg" alt="Paintless Dent Removal" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Paintless Dent Removal</h3><p>Surgical precision preserving original paintwork. Advanced methods — faster, cleaner, more cost-efficient.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Dent%20Removal" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="pr"><div class="sc-img"><img src="assets/web/svc-interior.jpg" alt="Interior Protection" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Interior Protection</h3><p>Precision-cut patterns for consoles, touchscreens, dashboard trims, and door panels with anti-microbial film.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Interior%20Protection" class="sli" target="_blank">Inquire Now →</a></div></div>
-            <div class="sc rv" data-c="de"><div class="sc-img"><img src="assets/web/svc-office.jpg" alt="Office Design" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Office Design</h3><p>Premium vinyl finishes, logo creation, corporate branding, office tinting, and decorative window films.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Office%20Design" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="fl" data-svc="fleet"><div class="sc-img"><img src="assets/web/svc-fleet.jpg" alt="Corporate Fleet Branding" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Corporate Fleet Branding</h3><p>Transform vehicles into brand ambassadors. Tailored conversions for corporate, police, fire, ambulance, and military vehicles.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Fleet%20Branding" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="au" data-svc="wrapping"><div class="sc-img"><img src="assets/web/svc-wrapping.jpg" alt="Premium Car Wrapping" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Premium Car Wrapping</h3><p>High-performance wrap systems with metallic tones, satin sheens, high-gloss, matte sophistication, and custom textures.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Car%20Wrapping" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="fl" data-svc="marine"><div class="sc-img"><img src="assets/web/svc-marine.jpg" alt="Marine Graphics" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Marine Graphics</h3><p>The nation's premier authority in luxury marine wraps. Custom-crafted designs for yachts and watercraft.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Marine%20Graphics" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="pr" data-svc="ppf"><div class="sc-img"><img src="assets/web/svc-ppf.jpg" alt="Paint Protection Film" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Paint Protection Film</h3><p>Invisible armour with heat-activated self-healing technology, non-yellowing clarity, and Edge Seal Technology.</p><a href="https://wa.me/971582223613?text=Interested%20in%20PPF" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="pr" data-svc="tinting"><div class="sc-img"><img src="assets/web/svc-tinting.jpg" alt="Solar Window Tinting" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Solar Window Tinting</h3><p>Advanced glass tinting with lifelong colour stability, shatter-resistant safety, and UV damage prevention.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Window%20Tinting" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="pr" data-svc="ceramic"><div class="sc-img"><img src="assets/web/svc-ceramic.jpg" alt="Nano Ceramic Coating" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Nano Ceramic Coating</h3><p>Molecular-level bonding delivers unmatched brilliance, ultra-smooth hydrophobic surface, and long-lasting defence.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Ceramic%20Coating" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="de" data-svc="sport"><div class="sc-img"><img src="assets/web/svc-sport.jpg" alt="Bespoke Sport Designs" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Bespoke Sport Designs</h3><p>Engineering distinctive visual identities that blend aerodynamic precision with bold, dominating presence.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Sport%20Designs" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="au" data-svc="rims"><div class="sc-img"><img src="assets/web/svc-rims.jpg" alt="Rims Protection" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Rims Protection</h3><p>Premium rim protection combining style with defence against scuffs, scrapes, and curb impact while concealing existing imperfections.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Rims%20Protection" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="au" data-svc="rims-paint"><div class="sc-img"><img src="assets/services/rims-paint/1.jpeg" alt="Rims and Callipers Paint" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Rims and Callipers Paint</h3><p>Precision colour refinishing for rims and callipers — a statement of refinement that imparts subtle yet unmistakable prestige.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Rims%20and%20Callipers%20Paint" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="de" data-svc="detailing"><div class="sc-img"><img src="assets/web/svc-detailing.jpg" alt="Auto Detailing" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Auto Detailing</h3><p>Full-spectrum cleanse. Expert polishing removes fine scratches, embedded dirt, and oxidation for flawless glory.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Detailing" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="au" data-svc="pdr"><div class="sc-img"><img src="assets/web/svc-pdr.jpg" alt="Paintless Dent Removal" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Paintless Dent Removal</h3><p>Surgical precision preserving original paintwork. Advanced methods — faster, cleaner, more cost-efficient.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Dent%20Removal" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="pr" data-svc="interior"><div class="sc-img"><img src="assets/web/svc-interior.jpg" alt="Interior Protection" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Interior Protection</h3><p>Precision-cut patterns for consoles, touchscreens, dashboard trims, and door panels with anti-microbial film.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Interior%20Protection" class="sli" target="_blank">Inquire Now →</a></div></div>
+            <div class="sc rv" data-c="de" data-svc="office"><div class="sc-img"><img src="assets/web/svc-office.jpg" alt="Office Design" loading="lazy"><div class="sc-img-ov"></div></div><div class="sc-body"><h3>Office Design</h3><p>Premium vinyl finishes, logo creation, corporate branding, office tinting, and decorative window films.</p><a href="https://wa.me/971582223613?text=Interested%20in%20Office%20Design" class="sli" target="_blank">Inquire Now →</a></div></div>
         </div>
     </section>
 
     <!-- SHOWCASE with real images -->
     <section class="shw" id="showcase"><div class="sh rv"><div class="shl">Our Work</div><h2 class="stt">CRAFTSMANSHIP IN EVERY DETAIL</h2></div>
-        <div class="shws">
+        <div class="shws" data-lenis-prevent>
             <div class="shwi"><img src="assets/web/showcase-fleet.jpg" alt="Fleet Branding" loading="lazy"><div class="shwi-ov"><span class="cat">Fleet Branding</span><h3>Government Fleet Conversion</h3><p>Full visual identity transformation for fleet vehicles.</p></div></div>
             <div class="shwi"><img src="assets/web/showcase-wrap.jpg" alt="Car Wrapping" loading="lazy"><div class="shwi-ov"><span class="cat">Car Wrapping</span><h3>Premium Wrap Collection</h3><p>Luxury finishes from satin to metallic chrome.</p></div></div>
             <div class="shwi"><img src="assets/web/showcase-marine.jpg" alt="Marine Graphics" loading="lazy"><div class="shwi-ov"><span class="cat">Marine</span><h3>Yacht Branding Suite</h3><p>Bespoke marine wrap and identity design.</p></div></div>
@@ -230,10 +279,10 @@
     <!-- WHY with SVG icons instead of emojis -->
     <section class="why"><div class="sh rv"><div class="shl">Why NUVOR</div><h2 class="stt">THE NUVOR DISTINCTION</h2></div>
         <div class="wg">
-            <div class="wi rv"><div class="wi-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h4>World's Finest Materials</h4><p>Only the planet's finest materials for long-term sustainability and excellence.</p></div>
-            <div class="wi rv"><div class="wi-ico"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div><h4>In-House Design Studio</h4><p>Master digital artists who design from concept to flawless execution.</p></div>
-            <div class="wi rv"><div class="wi-ico"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01"/></svg></div><h4>State-of-the-Art Facility</h4><p>Abu Dhabi facility with advanced technology and highest capacity.</p></div>
-            <div class="wi rv"><div class="wi-ico"><svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L7 18l4-4 3 3 4-4 2 1"/><path d="M17 8c2-3-2-6-5-4s-3 5 0 6c-2 3 0 6 3 6"/></svg></div><h4>Eco-Conscious Tech</h4><p>Next-gen printing technologies with minimal environmental impact.</p></div>
+            <div class="wi rv"><div class="wi-img"><img src="assets/services/ceramic/5.jpeg" alt="World's Finest Materials" loading="lazy"></div><h4>World's Finest Materials</h4><p>Only the planet's finest materials for long-term sustainability and excellence.</p></div>
+            <div class="wi rv"><div class="wi-img"><img src="assets/services/sport/4.jpeg" alt="In-House Design Studio" loading="lazy"></div><h4>In-House Design Studio</h4><p>Master digital artists who design from concept to flawless execution.</p></div>
+            <div class="wi rv"><div class="wi-img"><img src="assets/services/ppf/3.jpeg" alt="State-of-the-Art Facility" loading="lazy"></div><h4>State-of-the-Art Facility</h4><p>Abu Dhabi facility with advanced technology and highest capacity.</p></div>
+            <div class="wi rv"><div class="wi-img"><img src="assets/services/ceramic/4.jpeg" alt="Eco-Conscious Tech" loading="lazy"></div><h4>Eco-Conscious Tech</h4><p>Next-gen printing technologies with minimal environmental impact.</p></div>
         </div>
     </section>
 
@@ -242,12 +291,12 @@
     <!-- SECTORS with SVG icons -->
     <section class="sec" id="sectors"><div class="sh rv"><div class="shl">Industries</div><h2 class="stt">MULTI-SECTOR EXCELLENCE</h2><p class="sst">Trusted by governments, corporations, luxury owners, and maritime leaders.</p></div>
         <div class="secg">
-            <div class="secc rv"><div class="sec-ico"><svg viewBox="0 0 24 24"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1"/><rect x="5" y="2" width="14" height="19" rx="1"/></svg></div><h3>Government & Military</h3><p>Specialized conversions for police, fire, ambulance, and military vehicles with the highest compliance standards.</p></div>
-            <div class="secc rv"><div class="sec-ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v3"/><path d="M12 12v.01"/></svg></div><h3>Private Corporations</h3><p>Fleet branding, office design, and workspace transformation into statements of brand prestige.</p></div>
-            <div class="secc rv"><div class="sec-ico"><svg viewBox="0 0 24 24"><path d="M2 20a6 6 0 0 1 12 0"/><path d="M13.09 9.91A4 4 0 0 1 18 5"/><path d="M22 20a4 4 0 0 0-4-4"/><circle cx="8" cy="14" r="2"/></svg></div><h3>Marine & Maritime</h3><p>Luxury yachts to corporate vessels — wraps that command attention on the water.</p></div>
-            <div class="secc rv"><div class="sec-ico"><svg viewBox="0 0 24 24"><path d="M7 17m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0"/><path d="M17 17m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0"/><path d="M5 17H3v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2"/><path d="M9 17h6"/></svg></div><h3>Luxury Automotive</h3><p>Premium wrapping, PPF, ceramic coating, detailing, and bespoke sport designs.</p></div>
-            <div class="secc rv"><div class="sec-ico"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 4v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><h3>Logistics & Fleet</h3><p>Large-format printing and fleet graphics — consistent, durable branding across fleets.</p></div>
-            <div class="secc rv"><div class="sec-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div><h3>Commercial Spaces</h3><p>Office design, decorative films, commercial tinting for buildings and showrooms.</p></div>
+            <div class="secc rv"><div class="sec-img"><img src="assets/services/fleet/2.jpeg" alt="Government & Military" loading="lazy"></div><h3>Government & Military</h3><p>Specialized conversions for police, fire, ambulance, and military vehicles with the highest compliance standards.</p></div>
+            <div class="secc rv"><div class="sec-img"><img src="assets/services/office/2.jpeg" alt="Private Corporations" loading="lazy"></div><h3>Private Corporations</h3><p>Fleet branding, office design, and workspace transformation into statements of brand prestige.</p></div>
+            <div class="secc rv"><div class="sec-img"><img src="assets/services/marine/5.jpeg" alt="Marine & Maritime" loading="lazy"></div><h3>Marine & Maritime</h3><p>Luxury yachts to corporate vessels — wraps that command attention on the water.</p></div>
+            <div class="secc rv"><div class="sec-img"><img src="assets/services/sport/1.jpeg" alt="Luxury Automotive" loading="lazy"></div><h3>Luxury Automotive</h3><p>Premium wrapping, PPF, ceramic coating, detailing, and bespoke sport designs.</p></div>
+            <div class="secc rv"><div class="sec-img"><img src="assets/services/fleet/6.jpeg" alt="Logistics & Fleet" loading="lazy"></div><h3>Logistics & Fleet</h3><p>Large-format printing and fleet graphics — consistent, durable branding across fleets.</p></div>
+            <div class="secc rv"><div class="sec-img"><img src="assets/services/office/4.jpeg" alt="Commercial Spaces" loading="lazy"></div><h3>Commercial Spaces</h3><p>Office design, decorative films, commercial tinting for buildings and showrooms.</p></div>
         </div>
     </section>
 
@@ -258,22 +307,328 @@
         <div class="ctg">
             <div class="cti rv">
                 <div class="ctii"><div class="ctib"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h4>Location</h4><p>Grand View Building 01, 168 Atiq Bin Azran<br>Al Rumaithi St, Al Muntazah, Abu Dhabi</p></div></div>
-                <div class="ctii"><div class="ctib"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4>Phone</h4><a href="tel:026262729">02 6262 729</a><br><a href="tel:+971582223513">+971 58 222 3513</a><br><a href="tel:+971582223613">+971 58 222 3613</a></div></div>
+                <div class="ctii"><div class="ctib"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h4>Phone</h4><a href="tel:+971582223613">+971 58 222 3613</a><br><a href="tel:026262729">02 6262 729</a><br><a href="tel:+971582223513">+971 58 222 3513</a></div></div>
                 <div class="ctii"><div class="ctib"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div><div><h4>Email</h4><a href="mailto:info@nuvor.ae">info@nuvor.ae</a></div></div>
                 <div class="ctii"><div class="ctib"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div><h4>Website</h4><a href="https://nuvor.ae" target="_blank">www.nuvor.ae</a></div></div>
-                <div class="ctii"><div class="ctib"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><h4>Hours</h4><p>Sun — Thu: 8 AM — 6 PM · Sat: 9 AM — 2 PM</p></div></div>
             </div>
             <div class="cf rv"><div class="fr"><div class="fg"><label>Full Name</label><input type="text" id="fn" placeholder="Your name"></div><div class="fg"><label>Phone</label><input type="tel" id="fp" placeholder="+971 XX XXX XXXX"></div></div><div class="fg"><label>Email</label><input type="email" id="fe" placeholder="your@email.com"></div><div class="fg"><label>Service</label><select id="fss"><option value="">Select a service</option><option>Corporate Fleet Branding</option><option>Premium Car Wrapping</option><option>Marine Graphics</option><option>Paint Protection Film</option><option>Solar Window Tinting</option><option>Nano Ceramic Coating</option><option>Bespoke Sport Designs</option><option>Rims Protection & Paint</option><option>Auto Detailing</option><option>Paintless Dent Removal</option><option>Interior Protection</option><option>Office Design</option><option>Multiple Services</option></select></div><div class="fg"><label>Message</label><textarea id="fm" placeholder="Tell us about your project..."></textarea></div><div class="fsu"><button class="bp" onclick="swa()" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Send via WhatsApp</button><a href="mailto:info@nuvor.ae" class="bs">Send Email</a></div></div>
         </div>
     </section>
 
-    <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3631.1!2d54.37!3d24.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDI4JzEyLjAiTiA1NMKwMjInMTIuMCJF!5e0!3m2!1sen!2sae!4v1600000000000!5m2!1sen!2sae" allowfullscreen="" loading="lazy" title="NUVOR Location"></iframe>
+    <iframe class="map" src="https://www.google.com/maps?ll=24.417021161419406,54.46664675894001&q=24.417021161419406,54.46664675894001&z=17&t=m&output=embed&hl=en" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="NUVOR Location — Grand View Building 01, Al Muntazah, Abu Dhabi"></iframe>
 
-    <footer class="ft"><div class="ftc"><div><div class="ftbl"><img src="assets/web/Vertical Logo White.png" alt="NUVOR" style="height:30px;width:auto"></div><div class="fttl">ABSOLUTE <span>SOVEREIGNTY</span>. PURE <span>ELEGANCE</span>.</div><div class="ftso"><a href="https://www.instagram.com/nuvor.ae/" target="_blank">IG</a><a href="https://www.facebook.com/nuvor.ae" target="_blank">FB</a><a href="https://wa.me/971582223613" target="_blank">WA</a></div></div><div class="ftcl"><h4>Services</h4><ul><li><a href="https://wa.me/971582223613?text=Interested%20in%20Fleet%20Branding" target="_blank">Fleet Branding</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Car%20Wrapping" target="_blank">Car Wrapping</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20PPF" target="_blank">PPF</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Ceramic%20Coating" target="_blank">Ceramic Coating</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Marine%20Graphics" target="_blank">Marine Graphics</a></li></ul></div><div class="ftcl"><h4>More</h4><ul><li><a href="https://wa.me/971582223613?text=Interested%20in%20Tinting" target="_blank">Window Tinting</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Detailing" target="_blank">Auto Detailing</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Sport%20Designs" target="_blank">Sport Designs</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Office%20Design" target="_blank">Office Design</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Interior%20Protection" target="_blank">Interior Protection</a></li></ul></div><div class="ftcl"><h4>Contact</h4><ul><li><a href="tel:026262729">02 6262 729</a> · <a href="tel:+971582223513">+971 58 222 3513</a> · <a href="tel:+971582223613">+971 58 222 3613</a></li><li><a href="mailto:info@nuvor.ae">info@nuvor.ae</a></li><li><a href="https://nuvor.ae" target="_blank">www.nuvor.ae</a></li><li><a href="https://wa.me/971582223613" target="_blank">WhatsApp</a></li></ul></div></div><div class="ftb"><p>© 2026 NUVOR AUTO CARE. ALL RIGHTS RESERVED.</p><p>ABU DHABI, UNITED ARAB EMIRATES</p></div></footer>
+    <footer class="ft"><div class="ftc"><div><div class="ftbl"><img src="assets/web/Vertical Logo White.png" alt="NUVOR" style="height:30px;width:auto"></div><div class="fttl">ABSOLUTE <span>SOVEREIGNTY</span>. PURE <span>ELEGANCE</span>.</div><div class="ftso"><a href="https://www.instagram.com/nuvor.ae/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.849.07 3.252.149 4.771 1.691 4.919 4.919.058 1.265.069 1.644.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.265.058-1.644.07-4.849.07-3.205 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.848 0-3.205.013-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163c3.404 0 6.162-2.759 6.162-6.163 0-3.403-2.758-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a><a href="https://www.linkedin.com/company/nuvor-auto-care/about/?viewAsMember=true" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.268 2.37 4.268 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.063 2.063 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a><a href="https://www.facebook.com/profile.php?id=61560729144747" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a><a href="https://www.tiktok.com/@nuvorautocare?lang=en" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.81a8.16 8.16 0 0 0 4.77 1.52V6.89a4.85 4.85 0 0 1-1.84-.2z"/></svg></a></div></div><div class="ftcl"><h4>Services</h4><ul><li><a href="https://wa.me/971582223613?text=Interested%20in%20Fleet%20Branding" target="_blank">Fleet Branding</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Car%20Wrapping" target="_blank">Car Wrapping</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20PPF" target="_blank">PPF</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Ceramic%20Coating" target="_blank">Ceramic Coating</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Marine%20Graphics" target="_blank">Marine Graphics</a></li></ul></div><div class="ftcl"><h4>More</h4><ul><li><a href="https://wa.me/971582223613?text=Interested%20in%20Tinting" target="_blank">Window Tinting</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Detailing" target="_blank">Auto Detailing</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Sport%20Designs" target="_blank">Sport Designs</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Office%20Design" target="_blank">Office Design</a></li><li><a href="https://wa.me/971582223613?text=Interested%20in%20Interior%20Protection" target="_blank">Interior Protection</a></li></ul></div><div class="ftcl"><h4>Contact</h4><ul><li><a href="tel:+971582223613">+971 58 222 3613</a> · <a href="tel:026262729">02 6262 729</a> · <a href="tel:+971582223513">+971 58 222 3513</a></li><li><a href="mailto:info@nuvor.ae">info@nuvor.ae</a></li><li><a href="https://nuvor.ae" target="_blank">www.nuvor.ae</a></li><li><a href="https://wa.me/971582223613" target="_blank">WhatsApp</a></li></ul></div></div><div class="ftb"><p>© 2026 NUVOR AUTO CARE. ALL RIGHTS RESERVED.</p><p>ABU DHABI, UNITED ARAB EMIRATES</p></div></footer>
 
-    <script src="hero3d.js"></script>
     <script>
-        window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('preloader').classList.add('hidden');window.dispatchEvent(new CustomEvent('hero-reveal'))},1500)});
+        // Showcase carousel — vertical wheel scrolls horizontally; touch + drag also work.
+        (function(){
+            var track=document.querySelector('#showcase .shws');
+            if(!track) return;
+
+            // Smooth, eased horizontal wheel scroll
+            var scrollTarget=track.scrollLeft;
+            var animating=false;
+            var WHEEL_FACTOR=0.45;        // lower = slower per wheel notch
+            var EASE=0.14;                 // 0..1 — how fast scrollLeft catches up to target per frame
+            function clampTarget(){
+                var max=track.scrollWidth-track.clientWidth;
+                if(scrollTarget<0) scrollTarget=0;
+                if(scrollTarget>max) scrollTarget=max;
+            }
+            function animate(){
+                var diff=scrollTarget-track.scrollLeft;
+                if(Math.abs(diff)<0.5){
+                    track.scrollLeft=scrollTarget;
+                    animating=false;
+                    return;
+                }
+                track.scrollLeft+=diff*EASE;
+                requestAnimationFrame(animate);
+            }
+            track.addEventListener('wheel',function(e){
+                // Use whichever axis has more delta (trackpad horizontal vs mouse vertical)
+                var dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+                if(dx===0) return;
+                e.preventDefault();
+                // If user reversed direction or scrollLeft drifted, sync target to current pos before adding
+                if(!animating) scrollTarget=track.scrollLeft;
+                scrollTarget+=dx*WHEEL_FACTOR;
+                clampTarget();
+                if(!animating){animating=true;requestAnimationFrame(animate);}
+            },{passive:false});
+            // Click + drag (desktop) — also drives the same scrollTarget so wheel + drag don't fight
+            var isDown=false,startX=0,startLeft=0;
+            track.addEventListener('pointerdown',function(e){
+                if(e.target.closest('a')) return; // don't hijack clicks on links
+                isDown=true;startX=e.clientX;startLeft=track.scrollLeft;
+                animating=false;                       // stop any in-flight wheel animation
+                scrollTarget=track.scrollLeft;
+                track.style.cursor='grabbing';
+                track.setPointerCapture(e.pointerId);
+            });
+            track.addEventListener('pointermove',function(e){
+                if(!isDown) return;
+                track.scrollLeft=startLeft-(e.clientX-startX);
+                scrollTarget=track.scrollLeft;
+            });
+            track.addEventListener('pointerup',function(e){
+                isDown=false;track.style.cursor='';
+                scrollTarget=track.scrollLeft;
+                try{track.releasePointerCapture(e.pointerId);}catch(_){}
+            });
+            track.addEventListener('pointercancel',function(){isDown=false;track.style.cursor='';scrollTarget=track.scrollLeft;});
+            track.style.cursor='grab';
+        })();
+
+        // Make each service card clickable → opens detail page. Inner WhatsApp link still works.
+        document.querySelectorAll('#sg .sc[data-svc]').forEach(function(card){
+            card.addEventListener('click', function(e){
+                // Don't hijack clicks on the inner "Inquire Now" WhatsApp link
+                if (e.target.closest('a')) return;
+                var id = card.getAttribute('data-svc');
+                window.location.href = 'service.html?id='+id+'#'+id;
+            });
+        });
+    </script>
+    <!-- Hero PPF Wipe Reveal (GSAP ScrollTrigger + Lenis smooth scroll) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script>
+        (function(){
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+
+            // ---- Lenis smooth scrolling (synced with ScrollTrigger) ----
+            if (typeof Lenis !== 'undefined') {
+                var lenis = new Lenis({
+                    duration: 1.2,                                  // smooth ease without dragging
+                    easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+                    smoothWheel: true,
+                    wheelMultiplier: 0.85,                          // closer to native pace, still smoothed
+                    touchMultiplier: 1.4,
+                    syncTouch: true
+                });
+                // Drive Lenis from GSAP's ticker so animations and scroll stay in sync
+                lenis.on('scroll', ScrollTrigger.update);
+                gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
+                gsap.ticker.lagSmoothing(0);
+                window.__lenis = lenis;
+            }
+
+            // ---- Hero wipe scrub ----
+            // Pin spans 3 viewports of scroll so each wheel notch advances only a small slice of the wipe.
+            var wipeMask = document.getElementById('wipe-mask');
+            var wipeLine = document.getElementById('wipe-line');
+            var wipeGlow = document.getElementById('wipe-glow');
+            if (!wipeMask || !wipeLine || !wipeGlow) return;
+            ScrollTrigger.create({
+                trigger: '#hero',
+                start: 'top top',
+                end: '+=180%',                                      // 1.8× viewport — quick but still smooth
+                pin: true,
+                scrub: 0.9,                                         // light scrub = visual stays close to scroll, feels responsive
+                onUpdate: function(self){
+                    var pct = self.progress * 100;
+                    wipeMask.style.clipPath = 'inset(0 0 0 ' + pct.toFixed(2) + '%)';
+                    wipeLine.style.left = pct.toFixed(2) + '%';
+                    wipeLine.style.opacity = (self.progress > 0.005 && self.progress < 0.995) ? '1' : '0';
+                    wipeGlow.style.left = pct.toFixed(2) + '%';
+                    wipeGlow.style.opacity = (self.progress > 0.01 && self.progress < 0.99) ? '1' : '0';
+                }
+            });
+        })();
+    </script>
+
+    <!-- DYNAMIC SCROLL ENHANCEMENTS — parallax, count-ups, batched reveals, velocity-coupled marquee -->
+    <script>
+        (function(){
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+            // 1. SCROLL PROGRESS BAR (thin red line at top tracking page progress)
+            var progBar = document.createElement('div');
+            progBar.className = 'scroll-prog';
+            document.body.appendChild(progBar);
+            ScrollTrigger.create({
+                start: 0, end: 'max',
+                onUpdate: function(self){
+                    progBar.style.transform = 'scaleX(' + self.progress.toFixed(4) + ')';
+                }
+            });
+
+            // 2. HERO PHOTO subtle scale-in during wipe (depth)
+            gsap.fromTo('.hero-photo',
+                { scale: 1.02 },
+                {
+                    scale: 1.12,
+                    ease: 'none',
+                    scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=180%', scrub: 1.5 }
+                }
+            );
+
+            // 3. HERO DECORATIVE DIAGONAL LINES drift parallax
+            gsap.to('.hero-d', {
+                yPercent: -25,
+                ease: 'none',
+                scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=180%', scrub: 2 }
+            });
+
+            // 4. STATS COUNTER (.ast → 3 / 12+ / UAE)
+            ScrollTrigger.create({
+                trigger: '.ast',
+                start: 'top 80%',
+                once: true,
+                onEnter: function(){
+                    document.querySelectorAll('.ast .stn').forEach(function(el){
+                        var text = el.textContent.trim();
+                        var hasPlus = text.indexOf('+') !== -1;
+                        var num = parseInt(text, 10);
+                        if (isNaN(num)) {
+                            // "UAE" — pop in
+                            gsap.from(el, { opacity: 0, scale: 0.4, duration: 0.7, ease: 'back.out(1.6)' });
+                            return;
+                        }
+                        var obj = { v: 0 };
+                        gsap.to(obj, {
+                            v: num,
+                            duration: 1.6,
+                            ease: 'power2.out',
+                            onUpdate: function(){
+                                el.textContent = Math.round(obj.v) + (hasPlus ? '+' : '');
+                            }
+                        });
+                    });
+                }
+            });
+
+            // 5. WHY NUVOR IMAGES — scrub-driven scale (image starts zoomed-in, settles to 1)
+            gsap.utils.toArray('.wi-img img').forEach(function(img){
+                gsap.fromTo(img,
+                    { scale: 1.22 },
+                    {
+                        scale: 1,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: img.closest('.wi'),
+                            start: 'top 95%',
+                            end: 'top 30%',
+                            scrub: 1
+                        }
+                    }
+                );
+            });
+
+            // 6. SHOWCASE IMAGES — Y parallax as the section scrolls past
+            gsap.utils.toArray('.shwi img').forEach(function(img){
+                gsap.fromTo(img,
+                    { yPercent: -8 },
+                    {
+                        yPercent: 8,
+                        ease: 'none',
+                        scrollTrigger: { trigger: '#showcase', start: 'top bottom', end: 'bottom top', scrub: 1.2 }
+                    }
+                );
+            });
+
+            // 7. SECTORS CARDS — staggered batched reveal (replaces basic IO fade for these)
+            ScrollTrigger.batch('.secc', {
+                start: 'top 88%',
+                onEnter: function(els){
+                    gsap.fromTo(els,
+                        { opacity: 0, y: 60, scale: 0.96 },
+                        { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out', overwrite: true }
+                    );
+                },
+                onLeaveBack: function(els){
+                    gsap.set(els, { opacity: 0, y: 40, scale: 0.96, overwrite: true });
+                }
+            });
+
+            // 8. PROCESS NUMBER BOXES — pop in with rotation
+            ScrollTrigger.batch('.prsn', {
+                start: 'top 80%',
+                onEnter: function(els){
+                    gsap.fromTo(els,
+                        { scale: 0, rotate: -90 },
+                        { scale: 1, rotate: 0, duration: 0.7, stagger: 0.12, ease: 'back.out(1.7)', overwrite: true }
+                    );
+                }
+            });
+
+            // 9. PHILOSOPHY CARDS (Mission/Vision) — slide in from sides
+            var phc = document.querySelectorAll('.phc');
+            if (phc.length === 2) {
+                gsap.fromTo(phc[0], { opacity: 0, x: -50 }, {
+                    opacity: 1, x: 0, duration: 0.9, ease: 'power3.out',
+                    scrollTrigger: { trigger: '.phi', start: 'top 75%', toggleActions: 'play none none reverse' }
+                });
+                gsap.fromTo(phc[1], { opacity: 0, x: 50 }, {
+                    opacity: 1, x: 0, duration: 0.9, ease: 'power3.out',
+                    scrollTrigger: { trigger: '.phi', start: 'top 75%', toggleActions: 'play none none reverse' }
+                });
+            }
+
+            // 10. MARQUEE — speed responds to scroll velocity
+            var mqTrack = document.querySelector('.mq-t');
+            if (mqTrack) {
+                var mqBaseDur = 35;
+                ScrollTrigger.create({
+                    onUpdate: function(self){
+                        var v = Math.min(3, Math.abs(self.getVelocity()) * 0.0008 + 1);
+                        mqTrack.style.animationDuration = (mqBaseDur / v).toFixed(2) + 's';
+                    }
+                });
+            }
+
+            // 11. CTA BACKGROUND — subtle glow pulse linked to scroll
+            gsap.to('.cta', {
+                backgroundPosition: '50% 100%',
+                ease: 'none',
+                scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: 1 }
+            });
+
+            // Refresh after fonts/images load to avoid stale measurements
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
+            }
+            window.addEventListener('load', function(){
+                setTimeout(function(){ ScrollTrigger.refresh(); }, 200);
+            });
+        })();
+    </script>
+    <script>
+        // Animated preloader: progress fills 0→100% over ~1.8s, then fades out on window load
+        (function(){
+            var fill=document.getElementById('pl-progress-fill');
+            var pct=document.getElementById('pl-pct');
+            var pl=document.getElementById('preloader');
+            var start=performance.now();
+            var dur=1800; // ms to reach 100%
+            var hideAt=null;
+            function tick(now){
+                var t=Math.min(1,(now-start)/dur);
+                // ease-out cubic
+                var eased=1-Math.pow(1-t,3);
+                var p=Math.round(eased*100);
+                fill.style.width=p+'%';
+                pct.textContent=p+'%';
+                if(t<1) requestAnimationFrame(tick);
+                else hideAt=performance.now();
+            }
+            requestAnimationFrame(tick);
+            function hide(){
+                pl.classList.add('hidden');
+                window.dispatchEvent(new CustomEvent('hero-reveal'));
+            }
+            window.addEventListener('load',function(){
+                // Hide once both: load fired AND progress is full (min 1.8s)
+                var elapsed=performance.now()-start;
+                var wait=Math.max(0,dur+200-elapsed);
+                setTimeout(hide,wait);
+            });
+            // Safety: if 'load' never fires (e.g. blocked resource), force-hide after 6s
+            setTimeout(function(){if(!pl.classList.contains('hidden')) hide();},6000);
+        })();
         const c=document.getElementById('cursor');document.addEventListener('mousemove',e=>{c.style.left=e.clientX-9+'px';c.style.top=e.clientY-9+'px'});
         document.querySelectorAll('a,button,.sc').forEach(el=>{el.addEventListener('mouseenter',()=>c.classList.add('active'));el.addEventListener('mouseleave',()=>c.classList.remove('active'))});
         window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60)});

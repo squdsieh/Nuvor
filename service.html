@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">NUVOR Auto Care — Service</title>
+    <meta name="description" id="page-desc" content="NUVOR Auto Care premium service.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--red:#8b0000;--red-b:#a01010;--red-d:#5a0000;--bk:#000;--bk2:#0a0a0a;--bk3:#111;--gd:#1e1e1e;--g:#444;--gm:#777;--gl:#aaa;--w:#fff;--fd:'Orbitron',sans-serif;--fb:'Outfit',sans-serif}
+        *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;overflow-x:hidden}body{font-family:var(--fb);background:var(--bk);color:var(--w);overflow-x:hidden;-webkit-font-smoothing:antialiased}::selection{background:var(--red);color:var(--w)}
+
+        /* CURSOR */
+        .cursor{width:18px;height:18px;border:1.5px solid var(--red);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .15s,opacity .15s;mix-blend-mode:difference}.cursor.active{transform:scale(2.5);opacity:.5}@media(max-width:1024px){.cursor{display:none}}
+
+        /* NAV */
+        .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.2rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:all .4s;background:rgba(0,0,0,.7);backdrop-filter:blur(15px)}
+        .nav.scrolled{background:rgba(0,0,0,.95);backdrop-filter:blur(20px);padding:.8rem 4rem;border-bottom:1px solid rgba(139,0,0,.2)}
+        .nav-logo-img{height:32px;width:auto;transition:height .3s}.nav.scrolled .nav-logo-img{height:26px}
+        .nav-logo{display:flex;align-items:center;text-decoration:none}
+        .nav-links{display:flex;gap:2.2rem;list-style:none;align-items:center}.nav-links a{color:var(--gl);text-decoration:none;font-family:var(--fd);font-size:.6rem;font-weight:500;letter-spacing:.15rem;text-transform:uppercase;transition:color .3s;position:relative}.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--red);transition:width .3s}.nav-links a:hover{color:var(--w)}.nav-links a:hover::after{width:100%}
+        .nav-cta{background:var(--red)!important;border:1px solid var(--red)!important;color:var(--w)!important;padding:.55rem 1.5rem;font-family:var(--fd)!important;font-size:.6rem!important;font-weight:600!important;letter-spacing:.2rem!important;text-transform:uppercase;cursor:pointer;transition:all .4s;text-decoration:none}.nav-cta:hover{background:var(--red-b)!important;box-shadow:0 0 30px rgba(139,0,0,.4)}.nav-cta::after{display:none!important}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}.hamburger span{width:26px;height:1.5px;background:var(--red);transition:all .3s}.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,4.5px)}.hamburger.active span:nth-child(2){opacity:0}.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-4.5px)}
+        .mobile-menu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2rem}.mobile-menu.active{display:flex}.mobile-menu a{color:var(--w);text-decoration:none;font-family:var(--fd);font-size:1.2rem;font-weight:500;letter-spacing:.3rem;transition:color .3s}.mobile-menu a:hover{color:var(--red)}
+
+        /* SERVICE HERO */
+        .svc-hero{min-height:80vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8rem 4rem 4rem}
+        .svc-hero-bg{position:absolute;inset:0;z-index:0}
+        .svc-hero-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.32) contrast(1.1)}
+        .svc-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.85) 100%)}
+        .svc-hero-d{position:absolute;inset:0;overflow:hidden;opacity:.18;pointer-events:none}.svc-hero-d::before{content:'';position:absolute;top:-50%;right:-10%;width:2px;height:200%;background:var(--red);transform:rotate(-35deg)}.svc-hero-d::after{content:'';position:absolute;top:-50%;right:5%;width:1px;height:200%;background:var(--red);transform:rotate(-35deg)}
+        .svc-hero-c{position:relative;z-index:2;text-align:center;max-width:1000px}
+        .svc-back{display:inline-flex;align-items:center;gap:.6rem;color:var(--gl);text-decoration:none;font-family:var(--fd);font-size:.55rem;font-weight:500;letter-spacing:.3rem;text-transform:uppercase;margin-bottom:2rem;transition:color .3s}.svc-back:hover{color:var(--red)}
+        .svc-cat{font-family:var(--fd);font-size:.55rem;font-weight:600;letter-spacing:.4rem;text-transform:uppercase;color:var(--red);margin-bottom:1.2rem;display:inline-flex;align-items:center;gap:1rem}.svc-cat::before,.svc-cat::after{content:'';width:30px;height:2px;background:var(--red-d)}
+        .svc-title{font-family:var(--fd);font-size:clamp(1.6rem,4.5vw,3.8rem);font-weight:800;line-height:1.15;letter-spacing:.04em;margin-bottom:1.2rem;text-shadow:0 4px 40px rgba(0,0,0,.6)}
+        .svc-tagline{font-family:var(--fd);font-size:.7rem;font-weight:400;letter-spacing:.4rem;text-transform:uppercase;color:var(--gl);margin-bottom:2.5rem;line-height:2}
+        .svc-hero-btns{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap}
+        .bp{background:var(--red);color:var(--w);padding:.9rem 2.2rem;font-family:var(--fd);font-size:.6rem;font-weight:600;letter-spacing:.2rem;text-transform:uppercase;border:1px solid var(--red);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;transition:all .4s}.bp:hover{background:var(--red-b);box-shadow:0 8px 40px rgba(139,0,0,.3);transform:translateY(-2px)}
+        .bs{background:transparent;color:var(--w);padding:.9rem 2.2rem;font-family:var(--fd);font-size:.6rem;font-weight:500;letter-spacing:.2rem;text-transform:uppercase;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;transition:all .4s}.bs:hover{border-color:var(--red);color:var(--red)}
+
+        /* INTRO */
+        .svc-intro{padding:5rem 4rem;max-width:1100px;margin:0 auto;text-align:center}
+        .svc-intro p{font-family:var(--fb);font-size:1rem;font-weight:300;line-height:1.95;color:var(--gl)}
+        .svc-intro p::first-letter{font-size:1.5em;color:var(--red);font-family:var(--fd);font-weight:600}
+
+        /* SECTIONS */
+        .svc-sections{padding:3rem 4rem 6rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:1.5rem}
+        .svc-sec{background:var(--bk3);border:1px solid rgba(139,0,0,.1);padding:2.2rem;transition:all .4s;position:relative;overflow:hidden}
+        .svc-sec::before{content:'';position:absolute;top:0;left:0;width:50px;height:2px;background:var(--red)}
+        .svc-sec:hover{border-color:rgba(139,0,0,.35);transform:translateY(-3px)}
+        .svc-sec h3{font-family:var(--fd);font-size:.85rem;font-weight:700;color:var(--red);margin-bottom:1rem;letter-spacing:.15rem;text-transform:uppercase}
+        .svc-sec p{font-size:.85rem;font-weight:300;line-height:1.85;color:var(--gl)}
+
+        /* FEATURES */
+        .svc-features{padding:5rem 4rem;background:var(--bk2);position:relative;overflow:hidden}
+        .svc-features::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(139,0,0,.05) 0%,transparent 70%);pointer-events:none}
+        .svc-features-i{max-width:1200px;margin:0 auto;position:relative}
+        .sh{text-align:center;margin-bottom:3rem}.shl{font-family:var(--fd);font-size:.55rem;font-weight:600;letter-spacing:.4rem;text-transform:uppercase;color:var(--red);margin-bottom:1rem;display:inline-flex;align-items:center;gap:1rem}.shl::before,.shl::after{content:'';width:30px;height:2px;background:var(--red-d)}
+        .stt{font-family:var(--fd);font-size:clamp(1.2rem,2.6vw,1.8rem);font-weight:700;letter-spacing:.05em}
+        .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+        .feat{background:rgba(17,17,17,.7);border:1px solid rgba(139,0,0,.12);padding:1.4rem 1.6rem;display:flex;align-items:center;gap:1rem;transition:all .35s;backdrop-filter:blur(8px)}
+        .feat:hover{border-color:rgba(139,0,0,.4);background:rgba(139,0,0,.05);transform:translateX(4px)}
+        .feat-dot{width:8px;height:8px;background:var(--red);flex-shrink:0;box-shadow:0 0 12px rgba(139,0,0,.7)}
+        .feat span{font-size:.85rem;font-weight:400;color:var(--w);letter-spacing:.02em}
+
+        /* GALLERY */
+        .svc-gallery{padding:6rem 4rem;max-width:1400px;margin:0 auto}
+        .gal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-top:3rem}
+        .gal-item{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/3;border:1px solid rgba(139,0,0,.1);transition:all .4s}
+        .gal-item:hover{border-color:rgba(139,0,0,.4);transform:translateY(-3px)}
+        .gal-item img{width:100%;height:100%;object-fit:cover;filter:brightness(.85);transition:all .6s}
+        .gal-item:hover img{filter:brightness(1);transform:scale(1.06)}
+        .gal-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.5) 100%);pointer-events:none}
+
+        /* LIGHTBOX */
+        .lb{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9998;display:none;align-items:center;justify-content:center;padding:2rem;cursor:pointer;backdrop-filter:blur(8px)}
+        .lb.active{display:flex}
+        .lb img{max-width:96vw;max-height:92vh;object-fit:contain;box-shadow:0 0 60px rgba(139,0,0,.3)}
+        .lb-close{position:absolute;top:2rem;right:2rem;color:var(--w);font-family:var(--fd);font-size:1.4rem;cursor:pointer;background:transparent;border:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2);transition:all .3s}
+        .lb-close:hover{border-color:var(--red);color:var(--red)}
+
+        /* CTA */
+        .svc-cta{padding:5rem 4rem;background:linear-gradient(135deg,rgba(139,0,0,.12),var(--bk) 60%);text-align:center;position:relative;overflow:hidden;border-top:1px solid rgba(139,0,0,.2);border-bottom:1px solid rgba(139,0,0,.2)}
+        .svc-cta h2{font-family:var(--fd);font-size:clamp(1.2rem,2.8vw,1.9rem);font-weight:700;margin-bottom:.8rem;letter-spacing:.05em}
+        .svc-cta p{font-size:.85rem;font-weight:300;color:var(--gl);max-width:520px;margin:0 auto 2rem;line-height:1.8}
+        .ctab{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+        .bw{background:#25D366;color:#fff;padding:.9rem 2.2rem;font-family:var(--fd);font-size:.6rem;font-weight:600;letter-spacing:.15rem;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.7rem;transition:all .4s}.bw:hover{background:#20BA5C;transform:translateY(-2px);box-shadow:0 8px 35px rgba(37,211,102,.25)}.bw svg{width:16px;height:16px}
+
+        /* RELATED */
+        .svc-related{padding:6rem 4rem;max-width:1400px;margin:0 auto}
+        .rel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:2.5rem}
+        .rel-card{background:var(--bk3);border:1px solid rgba(139,0,0,.08);text-decoration:none;color:inherit;transition:all .4s;display:block;overflow:hidden}
+        .rel-card:hover{border-color:rgba(139,0,0,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+        .rel-card img{width:100%;height:180px;object-fit:cover;filter:brightness(.7);transition:all .5s}
+        .rel-card:hover img{filter:brightness(.9);transform:scale(1.05)}
+        .rel-card-body{padding:1.2rem 1.5rem 1.4rem}
+        .rel-card h4{font-family:var(--fd);font-size:.7rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:var(--w);margin-bottom:.5rem;transition:color .3s}
+        .rel-card:hover h4{color:var(--red)}
+        .rel-card .arr{display:inline-flex;align-items:center;gap:.4rem;color:var(--red);font-family:var(--fd);font-size:.55rem;font-weight:600;letter-spacing:.12rem;text-transform:uppercase;transition:gap .3s}
+        .rel-card:hover .arr{gap:.9rem}
+
+        /* WHATSAPP FLOAT */
+        .waf{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:900;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,.3);transition:all .3s;text-decoration:none;animation:wap 3s ease-in-out infinite}.waf:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(37,211,102,.5)}.waf svg{width:26px;height:26px;fill:#fff}@keyframes wap{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.3)}50%{box-shadow:0 4px 30px rgba(37,211,102,.5)}}
+
+        /* FOOTER */
+        .ft{padding:3rem 4rem 2rem;border-top:1px solid rgba(139,0,0,.12)}.ftb{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}.ftb p{font-family:var(--fd);font-size:.5rem;color:var(--g);letter-spacing:.1rem}
+
+        /* RESPONSIVE */
+        @media(max-width:1024px){
+            .nav{padding:1.2rem 2rem}.nav.scrolled{padding:.8rem 2rem}.nav-links{display:none}.hamburger{display:flex}
+            .svc-hero{padding:7rem 1.5rem 3rem}
+            .svc-intro,.svc-sections,.svc-features,.svc-gallery,.svc-related,.svc-cta,.ft{padding-left:1.5rem;padding-right:1.5rem}
+            .svc-sections{grid-template-columns:1fr}
+        }
+        @media(max-width:560px){
+            .svc-hero-btns{flex-direction:column;align-items:stretch}
+            .bp,.bs,.bw{justify-content:center}
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor" id="cursor"></div>
+
+    <a id="wa-float" href="https://wa.me/971582223613" class="waf" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <nav class="nav" id="nav">
+        <a href="index.html" class="nav-logo"><img src="assets/web/Logo-Vertical.png" alt="NUVOR" class="nav-logo-img"></a>
+        <ul class="nav-links">
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="index.html#showcase">Portfolio</a></li>
+            <li><a href="index.html#sectors">Sectors</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a id="nav-book" href="https://wa.me/971582223613" class="nav-cta" target="_blank">Book Now</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+    <div class="mobile-menu" id="mm">
+        <a href="index.html#about" onclick="cm()">About</a>
+        <a href="index.html#services" onclick="cm()">Services</a>
+        <a href="index.html#showcase" onclick="cm()">Portfolio</a>
+        <a href="index.html#sectors" onclick="cm()">Sectors</a>
+        <a href="index.html#contact" onclick="cm()">Contact</a>
+        <a id="mm-book" href="https://wa.me/971582223613" target="_blank" onclick="cm()">Book Now</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="svc-hero">
+        <div class="svc-hero-bg" id="hero-bg"></div>
+        <div class="svc-hero-d"></div>
+        <div class="svc-hero-c">
+            <a href="index.html#services" class="svc-back">← All Services</a>
+            <div class="svc-cat" id="svc-cat">Service</div>
+            <h1 class="svc-title" id="svc-title">Service</h1>
+            <p class="svc-tagline" id="svc-tagline">Tagline</p>
+            <div class="svc-hero-btns">
+                <a id="hero-wa" class="bp" target="_blank">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Get a Quote
+                </a>
+                <a href="index.html#contact" class="bs">Contact Us →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="svc-intro">
+        <p id="svc-intro">Loading…</p>
+    </section>
+
+    <!-- SECTIONS -->
+    <section class="svc-sections" id="svc-sections"></section>
+
+    <!-- FEATURES -->
+    <section class="svc-features">
+        <div class="svc-features-i">
+            <div class="sh">
+                <div class="shl">Signature Advantages</div>
+                <h2 class="stt">Why Choose NUVOR</h2>
+            </div>
+            <div class="feature-grid" id="feature-grid"></div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="svc-gallery">
+        <div class="sh">
+            <div class="shl">Our Work</div>
+            <h2 class="stt">Reference Gallery</h2>
+        </div>
+        <div class="gal-grid" id="gal-grid"></div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lb" id="lb">
+        <button class="lb-close" id="lb-close">×</button>
+        <img id="lb-img" alt="">
+    </div>
+
+    <!-- CTA -->
+    <section class="svc-cta">
+        <h2 id="cta-h">READY TO <span style="color:var(--red)">EXPERIENCE</span> NUVOR?</h2>
+        <p>Connect with our specialists on WhatsApp for a personalized consultation tailored to your needs.</p>
+        <div class="ctab">
+            <a id="cta-wa" class="bw" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Chat on WhatsApp
+            </a>
+            <a href="tel:026262729" class="bs">Call 02 6262 729</a>
+        </div>
+    </section>
+
+    <!-- RELATED -->
+    <section class="svc-related">
+        <div class="sh">
+            <div class="shl">Explore More</div>
+            <h2 class="stt">Other NUVOR Services</h2>
+        </div>
+        <div class="rel-grid" id="rel-grid"></div>
+    </section>
+
+    <footer class="ft">
+        <div class="ftb">
+            <p>© 2026 NUVOR AUTO CARE. ALL RIGHTS RESERVED.</p>
+            <p>ABU DHABI, UNITED ARAB EMIRATES</p>
+        </div>
+    </footer>
+
+    <script src="services-data.js"></script>
+    <script>
+        // Cursor
+        const c=document.getElementById('cursor');document.addEventListener('mousemove',e=>{c.style.left=e.clientX-9+'px';c.style.top=e.clientY-9+'px'});
+        document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>c.classList.add('active'));el.addEventListener('mouseleave',()=>c.classList.remove('active'))});
+
+        // Scroll nav
+        window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60)});
+
+        // Mobile menu
+        const hb=document.getElementById('hamburger'),mmm=document.getElementById('mm');
+        hb.addEventListener('click',()=>{hb.classList.toggle('active');mmm.classList.toggle('active');document.body.style.overflow=mmm.classList.contains('active')?'hidden':''});
+        function cm(){hb.classList.remove('active');mmm.classList.remove('active');document.body.style.overflow=''}
+
+        // Get service id from URL — checks query first, then hash (for static hosts that strip query strings)
+        function getServiceId(){
+            const params=new URLSearchParams(window.location.search);
+            const qId=params.get('id');
+            if (qId) return qId;
+            // Hash format: #id=fleet  or  #fleet
+            const h=window.location.hash.replace(/^#/,'');
+            if (h.indexOf('id=')===0) return h.slice(3);
+            if (h) return h;
+            return 'fleet';
+        }
+        // Re-render if hash changes (e.g. clicking a related-service link with same path)
+        window.addEventListener('hashchange', function(){ location.reload(); });
+
+        function imgPath(folder, idx){
+            return window.NUVOR_IMG(folder, idx);
+        }
+
+        function renderService(){
+            const id=getServiceId();
+            const svc=window.NUVOR_SERVICES[id];
+            if(!svc){
+                document.getElementById('svc-title').textContent='Service Not Found';
+                document.getElementById('svc-intro').textContent='The service you are looking for does not exist. Please return to the homepage.';
+                return;
+            }
+
+            // Page meta
+            document.getElementById('page-title').textContent=svc.title+' — NUVOR Auto Care';
+            document.getElementById('page-desc').setAttribute('content',svc.cardDesc);
+
+            // Hero background image
+            const heroBg=document.getElementById('hero-bg');
+            const heroImg=document.createElement('img');
+            heroImg.src=imgPath(svc.folder,1);
+            heroImg.alt=svc.title;
+            heroBg.appendChild(heroImg);
+
+            // Hero content
+            document.getElementById('svc-cat').textContent=svc.category;
+            document.getElementById('svc-title').textContent=svc.title;
+            document.getElementById('svc-tagline').textContent=svc.tagline;
+
+            // WhatsApp links
+            const waUrl='https://wa.me/971582223613?text='+encodeURIComponent(svc.waMsg);
+            document.getElementById('hero-wa').href=waUrl;
+            document.getElementById('cta-wa').href=waUrl;
+            document.getElementById('nav-book').href=waUrl;
+            document.getElementById('mm-book').href=waUrl;
+            document.getElementById('wa-float').href=waUrl;
+
+            // Intro
+            document.getElementById('svc-intro').textContent=svc.intro;
+
+            // Sections
+            const secEl=document.getElementById('svc-sections');
+            secEl.innerHTML=svc.sections.map(s=>`<div class="svc-sec"><h3>${s.heading}</h3><p>${s.body}</p></div>`).join('');
+
+            // Features
+            const featEl=document.getElementById('feature-grid');
+            featEl.innerHTML=svc.features.map(f=>`<div class="feat"><div class="feat-dot"></div><span>${f}</span></div>`).join('');
+
+            // Gallery
+            const galEl=document.getElementById('gal-grid');
+            let galHtml='';
+            for(let i=1;i<=svc.imageCount;i++){
+                galHtml+=`<div class="gal-item" data-img="${imgPath(svc.folder,i)}"><img src="${imgPath(svc.folder,i)}" alt="${svc.title} ${i}" loading="lazy"></div>`;
+            }
+            galEl.innerHTML=galHtml;
+
+            // Gallery click → lightbox
+            document.querySelectorAll('.gal-item').forEach(el=>{
+                el.addEventListener('click',()=>{
+                    document.getElementById('lb-img').src=el.dataset.img;
+                    document.getElementById('lb').classList.add('active');
+                    document.body.style.overflow='hidden';
+                });
+            });
+
+            // Related services (random 3 others)
+            const others=Object.keys(window.NUVOR_SERVICES).filter(k=>k!==id);
+            for(let i=others.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[others[i],others[j]]=[others[j],others[i]];}
+            const picks=others.slice(0,3);
+            const relEl=document.getElementById('rel-grid');
+            relEl.innerHTML=picks.map(k=>{
+                const r=window.NUVOR_SERVICES[k];
+                return `<a class="rel-card" href="service.html?id=${k}#${k}"><img src="${imgPath(r.folder,1)}" alt="${r.title}" loading="lazy"><div class="rel-card-body"><h4>${r.title}</h4><span class="arr">View Service →</span></div></a>`;
+            }).join('');
+
+            // Re-bind cursor to new links
+            document.querySelectorAll('.rel-card,.gal-item,.feat,.svc-sec').forEach(el=>{
+                el.addEventListener('mouseenter',()=>c.classList.add('active'));
+                el.addEventListener('mouseleave',()=>c.classList.remove('active'));
+            });
+        }
+
+        // Lightbox close
+        document.getElementById('lb').addEventListener('click',e=>{
+            document.getElementById('lb').classList.remove('active');
+            document.body.style.overflow='';
+        });
+
+        renderService();
+    </script>
+</body>
+</html>
